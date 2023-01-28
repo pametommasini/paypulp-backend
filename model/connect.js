@@ -2,7 +2,7 @@ const { Client } = require("pg");
 require("dotenv").config();
 
 // run file to check connection
-const funct1 = async () => {
+(async () => {
   const connectionData = {
     host: process.env.PG_HOST,
     port: process.env.PG_PORT,
@@ -12,11 +12,9 @@ const funct1 = async () => {
   };
   const newClient = new Client(connectionData);
   await newClient.connect();
-  const res = await client.query("SELECT $1::text as connected", [
+  const res = await newClient.query("SELECT $1::text as connected", [
     "Connection to postgres successful!",
   ]);
   console.log(res.rows[0].connected);
   await newClient.end();
-};
-
-funct1();
+})();

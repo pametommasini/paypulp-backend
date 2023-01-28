@@ -73,8 +73,8 @@ CREATE TABLE countries (
 
 CREATE TABLE products (
 	"product_id" serial PRIMARY KEY NOT NULL UNIQUE,
-	"product_uuid" varchar(32) NOT NULL,
-	"user_uuid" varchar(255) NOT NULL,
+	"product_uuid" varchar(32) NOT NULL UNIQUE,
+	"business_id" int NOT NULL,
 	"product_name" varchar(255) NOT NULL,
 	"product_type" varchar(255) NOT NULL,
 	"product_description" varchar(255) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE products (
 CREATE TABLE payment_methods (
 	"pay_method_id" serial PRIMARY KEY NOT NULL,
 	"pay_method_uuid" varchar(32) NOT NULL UNIQUE,
-	"user_uuid" date NOT NULL,
+	"personal_id" int NOT NULL,
 	"is_preferred" boolean NOT NULL,
 	"card_number" varchar(25) NOT NULL,
 	"card_name" varchar(100) NOT NULL,
@@ -112,9 +112,6 @@ CREATE TABLE transactions (
 
 
 
-
-
-
 ALTER TABLE "admin_accounts" ADD CONSTRAINT "admin_accounts_fk0" FOREIGN KEY ("user_uuid") REFERENCES "users"("user_uuid");
 
 ALTER TABLE "paypulp_costumers" ADD CONSTRAINT "paypulp_costumers_fk0" FOREIGN KEY ("user_uuid") REFERENCES "users"("user_uuid");
@@ -133,13 +130,3 @@ ALTER TABLE "transactions" ADD CONSTRAINT "transactions_fk0" FOREIGN KEY ("busin
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_fk1" FOREIGN KEY ("personal_id") REFERENCES "personal_accounts"("personal_id");
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_fk2" FOREIGN KEY ("pay_method_uuid") REFERENCES "payment_methods"("pay_method_uuid");
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_fk3" FOREIGN KEY ("product_uuid") REFERENCES "products"("product_uuid");
-
-
-
-
-
-
-
-
-
-
