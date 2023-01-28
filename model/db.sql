@@ -2,23 +2,23 @@ CREATE DATABASE paypulp;
 
 
 
-CREATE TABLE "public.users" (
+CREATE TABLE users (
 	"user_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"user_uuid" varchar(32) NOT NULL UNIQUE,
 	"email" varchar(80) NOT NULL UNIQUE,
-	"account_type" varchar(15) NOT NULL,
+	"account_type" varchar(15) NOT NULL
 );
 
 
 
-CREATE TABLE "public.admin_accounts" (
+CREATE TABLE admin_accounts (
 	"admin_id" serial PRIMARY KEY NOT NULL,
-	"user_uuid" varchar(32) NOT NULL,
+	"user_uuid" varchar(32) NOT NULL
 );
 
 
 
-CREATE TABLE "public.paypulp_costumers" (
+CREATE TABLE paypulp_costumers (
 	"costumer_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"user_uuid" varchar(32) NOT NULL,
 	"first_name" varchar(50) NOT NULL,
@@ -34,19 +34,19 @@ CREATE TABLE "public.paypulp_costumers" (
 	"mailing_invoices" boolean NOT NULL DEFAULT 'true',
 	"mailing_sales" boolean NOT NULL DEFAULT 'true',
 	"mailing_updates" boolean NOT NULL DEFAULT 'true',
-	"creation_time" date NOT NULL,
+	"creation_time" date NOT NULL
 );
 
 
 
-CREATE TABLE "public.personal_accounts" (
+CREATE TABLE personal_accounts (
 	"personal_id" serial PRIMARY KEY NOT NULL,
-	"costumer_id" int NOT NULL,
+	"costumer_id" int NOT NULL
 );
 
 
 
-CREATE TABLE "public.business_accounts" (
+CREATE TABLE business_accounts (
 	"business_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"costumer_id" int NOT NULL UNIQUE,
 	"business_name" varchar(50) NOT NULL UNIQUE,
@@ -56,22 +56,22 @@ CREATE TABLE "public.business_accounts" (
 	"cif" varchar(40) NOT NULL,
 	"industry" varchar(40) NOT NULL,
 	"country" varchar(100) NOT NULL,
-	"bank_account_number" varchar(20) NOT NULL,
+	"bank_account_number" varchar(20) NOT NULL
 );
 
 
 
-CREATE TABLE "public.countries" (
+CREATE TABLE countries (
 	"country_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"costumer_id" int NOT NULL UNIQUE,
 	"tax_percentage" smallint NOT NULL,
 	"phone_prefix" varchar(5) NOT NULL,
-	"currency" varchar(3) NOT NULL,
+	"currency" varchar(3) NOT NULL
 );
 
 
 
-CREATE TABLE "public.products" (
+CREATE TABLE products (
 	"product_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"product_uuid" varchar(32) NOT NULL,
 	"user_uuid" varchar(255) NOT NULL,
@@ -79,12 +79,12 @@ CREATE TABLE "public.products" (
 	"product_type" varchar(255) NOT NULL,
 	"product_description" varchar(255) NOT NULL,
 	"image" varchar(255) NOT NULL,
-	"price" numeric NOT NULL,
+	"price" numeric NOT NULL
 );
 
 
 
-CREATE TABLE "public.payment_methods" (
+CREATE TABLE payment_methods (
 	"pay_method_id" serial PRIMARY KEY NOT NULL,
 	"pay_method_uuid" varchar(32) NOT NULL UNIQUE,
 	"user_uuid" date NOT NULL,
@@ -93,12 +93,12 @@ CREATE TABLE "public.payment_methods" (
 	"card_name" varchar(100) NOT NULL,
 	"card_type" varchar(20) NOT NULL,
 	"card_expiry_date" date NOT NULL,
-	"card_security_code" varchar(3) NOT NULL,
+	"card_security_code" varchar(3) NOT NULL
 );
 
 
 
-CREATE TABLE "public.transactions" (
+CREATE TABLE transactions (
 	"transaction_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"business_id" int NOT NULL,
 	"personal_id" int NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE "public.transactions" (
 	"product_uuid" varchar(32) NOT NULL,
 	"total_amount" numeric NOT NULL,
 	"date_time" timestamp with time zone NOT NULL,
-	"went_trough" boolean NOT NULL,
+	"went_trough" boolean NOT NULL
 );
 
 
