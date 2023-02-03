@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', require("../controllers/index"));
 
 /* routing */
-router.use('/users', require("./users"));
+router.use('/user', require("./user"));
 
 
 
