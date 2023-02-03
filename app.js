@@ -21,7 +21,7 @@ app.use('/secure-request', validateToken, routes);
 
 
 // routes
-app.use("/api", indexRouter);
+app.use("/api", require("./routes"));
 
 // jwt login
 app.post('/login', require('./controllers/loginController'));

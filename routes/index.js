@@ -5,11 +5,6 @@ const router = express.Router();
 router.get('/', require("../controllers/index"));
 
 /* routing */
-router.use('/users', require("./users"));
-
-
-router.get('/', require('../controllers/secureRequestController'));
-
-
+router.use('/user', require("./user"));
 
 module.exports = router;
