@@ -5,7 +5,14 @@ const router = express.Router();
 router.get('/', require("../controllers/index"));
 
 /* routing */
-router.use('/users', require("./users"));
+
+router.use('/user', require("./user")); 
+
+/*routing*/
+router.use('/transaction', require("./transaction"));
+
+
+
 
 
 router.get('/', require('../controllers/secureRequestController'));
@@ -15,5 +22,7 @@ router.post('/login', require('../controllers/loginController'));
 
 // endpoint de signup
 router.post('/signup', require('../controllers/signupController'));
+
+
 
 module.exports = router;
