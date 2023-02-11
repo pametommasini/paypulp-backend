@@ -6,7 +6,8 @@ CREATE TABLE users (
 	"user_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"user_uuid" varchar(32) NOT NULL UNIQUE,
 	"email" varchar(80) NOT NULL UNIQUE,
-	"account_type" varchar(15) NOT NULL
+	"account_type" varchar(15) NOT NULL,
+	"password" varchar(32) NOT NULL
 );
 
 
