@@ -6,7 +6,13 @@ router.get('/', require("../controllers/index"));
 
 /* routing */
 
-router.use('/user', require("./user"));
+router.use('/user', require("./user")); 
+
+/*routing*/
+router.use('/transaction', require("./transaction"));
+
+
+
 
 
 router.get('/', require('../controllers/secureRequestController'));
