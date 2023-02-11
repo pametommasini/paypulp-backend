@@ -26,6 +26,8 @@ app.use("/api", require("./routes"));
 // jwt login
 app.post('/login', require('./controllers/loginController'));
 
+app.post('/signup', require('./controllers/signupController'));
+
 /* // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
