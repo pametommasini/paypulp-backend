@@ -28,7 +28,8 @@ class UserManager {
     const pgClient = await newClient();
     const queryRes = await pgClient.query("SELECT * FROM users");
     pgClient.end();
-    return queryRes.rows;
+    /*console.log(queryRes)*/
+        return queryRes.rows;
   };
   
   static getUser = async (userUuid) => {
@@ -40,6 +41,27 @@ class UserManager {
     pgClient.end();
     return queryRes.rows;
   };
-}
+
+  static getNewUser = async (newUser) => {
+    const pgClient = await newClient();
+    const queryRes = await pgClient.query(
+      "INSERT INTO users (user_uuid, email, account_type) VALUES (($1), ($2), ($3)) RETURNING *",
+      [newUser.userUuid, newUser.email, newUser.accountType]
+    );
+    pgClient.end();
+    return queryRes.rows [0];
+  };
+
+  static deleteUser = async (userUuid) => {
+    const pgClient = await newClient();
+    const queryRes = await pgClient.query(
+      "DELETE FROM users WHERE user_uuid = ($1)",
+      [userUuid]
+    );
+    pgClient.end();
+    return queryRes.rows;
+  };
+
+};
 
 module.exports = UserManager;
