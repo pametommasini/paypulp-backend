@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config({path:'./.env'});
 const validateToken = require('./middlewares/validateToken');
 const routes = require('./routes');
-const indexRouter = require("./routes");
 
 const app = express();
 
@@ -23,10 +22,7 @@ app.use('/secure-request', validateToken, routes);
 // routes
 app.use("/api", require("./routes"));
 
-// jwt login
-app.post('/login', require('./controllers/loginController'));
 
-app.post('/signup', require('./controllers/signupController'));
 
 /* // catch 404 and forward to error handler
 app.use(function (req, res, next) {

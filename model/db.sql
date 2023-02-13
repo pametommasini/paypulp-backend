@@ -4,24 +4,24 @@ CREATE DATABASE paypulp;
 
 CREATE TABLE users (
 	"user_id" serial PRIMARY KEY NOT NULL UNIQUE,
-	"user_uuid" varchar(32) NOT NULL UNIQUE,
+	"user_uuid" varchar(40) NOT NULL UNIQUE,
 	"email" varchar(80) NOT NULL UNIQUE,
 	"account_type" varchar(15) NOT NULL,
-	"password" varchar(32) NOT NULL
+	"password" varchar(32) NOT NULL  
 );
 
 
 
 CREATE TABLE admin_accounts (
 	"admin_id" serial PRIMARY KEY NOT NULL,
-	"user_uuid" varchar(32) NOT NULL
+	"user_uuid" varchar(40) NOT NULL
 );
 
 
 
 CREATE TABLE paypulp_costumers (
 	"costumer_id" serial PRIMARY KEY NOT NULL UNIQUE,
-	"user_uuid" varchar(32) NOT NULL,
+	"user_uuid" varchar(40) NOT NULL,
 	"first_name" varchar(50) NOT NULL,
 	"last_name" varchar(50) NOT NULL,
 	"phone" varchar(20) NOT NULL,
@@ -74,7 +74,7 @@ CREATE TABLE countries (
 
 CREATE TABLE products (
 	"product_id" serial PRIMARY KEY NOT NULL UNIQUE,
-	"product_uuid" varchar(32) NOT NULL UNIQUE,
+	"product_uuid" varchar(40) NOT NULL UNIQUE,
 	"business_id" int NOT NULL,
 	"product_name" varchar(255) NOT NULL,
 	"product_type" varchar(255) NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE products (
 
 CREATE TABLE payment_methods (
 	"pay_method_id" serial PRIMARY KEY NOT NULL,
-	"pay_method_uuid" varchar(32) NOT NULL UNIQUE,
+	"pay_method_uuid" varchar(40) NOT NULL UNIQUE,
 	"personal_id" int NOT NULL,
 	"is_preferred" boolean NOT NULL,
 	"card_number" varchar(25) NOT NULL,
