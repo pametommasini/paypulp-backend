@@ -1,5 +1,3 @@
-const newTransaction = require("../controllers/newTransaction");
-
 const newClient = async () => await require("./newClient")();
 
 class transaction {
@@ -42,7 +40,7 @@ class transaction {
         [transactionId]
       );
       pgClient.end();
-      return queryRes.rows
+      return queryRes.rows;
     };
 
     static getNewTransaction= async (newTransaction) => {
