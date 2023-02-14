@@ -16,11 +16,11 @@ const loginController = async (req, res) => {
   }
   const userEmail = dbClient.rows[0].email;
   const userUuid = dbClient.rows[0].user_uuid;
-  const userType = dbClient.rows[0].account_type;
+  const accountType = dbClient.rows[0].account_type;
   const token = jwt.sign({ email }, process.env.SECRET, {
     algorithm: 'HS256',
     expiresIn: 3000
   })
-  res.json({token, userUuid, userEmail, userType});
+  res.json({token, userUuid, userEmail, accountType});
 }
 module.exports = loginController;
