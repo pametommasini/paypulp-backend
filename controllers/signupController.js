@@ -21,7 +21,6 @@ const signupController = async (req, res) => {
         securityQuestionAnswer
     } = req.body;
     const md5Password = CryptoJS.MD5(password).toString();
-    console.log(req.body);
     let resUsers;
      try {
         const dbUsers = await client.query('INSERT INTO users (user_uuid, email, account_type, password) VALUES (($1), ($2), ($3), ($4)) RETURNING *',
