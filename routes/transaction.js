@@ -3,7 +3,7 @@ var router = express.Router();
 
 router.get('/', require("../controllers/getAllTransactions"));
 
-router.get('/:transactionId', require("../controllers/getTransaction"));
+router.get('/:userUuid', require("../controllers/getTransaction"));
 
 router.post('/', require("../controllers/getNewTransaction"));
 
