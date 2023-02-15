@@ -1,6 +1,5 @@
 const newClient = async () => await require("./newClient")();
 const CryptoJS = require("crypto-js");
-const MD5 = require("crypto-js/md5");
 const { v4: uuidv4 } = require('uuid');
 
 class paymentMethod {
@@ -25,26 +24,25 @@ class paymentMethod {
     }
 }
 
-class paymentMethodManager {
+class PaymentMethodManager {
 
-    static getAllPayments = async (id) => {
+    static getPayments = async (req, id) => {
         const pgClient = await newClient ();
+        const isPreferred = req.ispreferred;
+        if(isPreferred){
+          const prefQueryRes = await pgClient.query(
+            "SELECT * FROM payment_methods WHERE is_preferred = TRUE"
+          )
+          pgClient.end();
+          return prefQueryRes.rows[0]
+        } else {
         const queryRes = await pgClient.query (
-          "SELECT * FROM payment_methods WHERE personal_id = {$1}",
+          "SELECT * FROM payment_methods WHERE personal_id = ($1)",
           [id]
         );
         pgClient.end();
-        return queryRes.rows;
-    }
-    
-    static getPayment = async (id, is_preferred) => {
-        const pgClient = await newClient ();
-        const queryRes = await pgClient.query (
-          "SELECT * FROM payment_methods WHERE personal_id = {$1} AND is_preferred = {$2}",
-          [id, is_preferred]
-        );
-        pgClient.end();
-        return queryRes.rows;
+        return queryRes.rows[0];
+        }
     }
 
     static postPayment = async (newPayment) => {
@@ -52,10 +50,22 @@ class paymentMethodManager {
         const pgClient = await newClient ();
         const queryRes = await pgClient.query (
           "INSERT INTO payment_methods (pay_method_uuid, personal_id, is_preferred, card_number, card_name, card_type, card_expiry_date, card_security_code) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)) RETURNING *",
-          [pay_method_uuid, personal_id, is_preferred, card_number, card_name, card_type, card_expiry_date, card_security_code]
+          [pay_method_uuid, newPayment.personal_id, newPayment.is_preferred, newPayment.card_number, newPayment.card_name, newPayment.card_type, newPayment.card_expiry_date, newPayment.card_security_code]
         );
         pgClient.end();
         return queryRes.rows[0];
     }
+
+    static deletePayment = async (id) => {
+        const pgClient = await newClient ();
+        const queryRes = await pgClient.query (
+            "DELETE FROM payment_methods WHERE personal_id = ($1)",
+            [id]
+          );
+          pgClient.end();
+          return queryRes.rows[0];
+    }
     
 }
+
+module.exports = PaymentMethodManager;
