@@ -7,6 +7,10 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
   const md5Password = CryptoJS.MD5(password).toString();
   const dbClient = await client.query("SELECT * FROM users WHERE email = ($1)", [email]);
+  const userEmail = dbClient.rows[0].email;
+  const userUuid = dbClient.rows[0].user_uuid;
+  const accountType = dbClient.rows[0].account_type;
+  const dbRes = await client.query("SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);", [userUuid]);
   if(dbClient.rows.length === 0){
     return res.status(401).json("User not found!").end();
   }
@@ -14,13 +18,10 @@ const loginController = async (req, res) => {
   if( email != dbClient.rows[0].email || md5Password != dbPassword ){
     return res.status(401).json("Invalid user or password!").end();
   }
-  const userEmail = dbClient.rows[0].email;
-  const userUuid = dbClient.rows[0].user_uuid;
-  const accountType = dbClient.rows[0].account_type;
   const token = jwt.sign({ email }, process.env.SECRET, {
     algorithm: 'HS256',
     expiresIn: 3000
   })
-  res.json({token, userUuid, userEmail, accountType});
+  res.json({token, dbRes, userUuid, userEmail, accountType, });
 }
 module.exports = loginController;
