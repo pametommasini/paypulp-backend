@@ -21,7 +21,7 @@ router.get('/', require('../controllers/secureRequestController'));
 router.post('/login', require('../controllers/loginController'));
 
 // endpoint de signup
-router.post('/signup', require('../controllers/signupController'));
+//router.post('/signup', require('../controllers/signupController'));
 
 
 
