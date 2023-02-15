@@ -5,21 +5,12 @@ const router = express.Router();
 router.get('/', require("../controllers/index"));
 
 /* routing */
-
-
 router.use('/user', require("./user")); 
-
 
 router.use('/transaction', require("./transaction"));
 
-
 router.use('/product', require("./product"));
 
-
-
 router.get('/', require('../controllers/secureRequestController'));
-
-
-
 
 module.exports = router;
