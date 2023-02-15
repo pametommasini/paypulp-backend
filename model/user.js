@@ -35,8 +35,7 @@ class UserManager {
   static getUser = async (userUuid) => {
     const pgClient = await newClient();
     const queryRes = await pgClient.query(
-      "SELECT * FROM users WHERE user_uuid = ($1)",
-      [userUuid]
+      "SELECT * FROM users WHERE user_uuid = ($1)", [userUuid]
     );
     pgClient.end();
     return queryRes.rows;

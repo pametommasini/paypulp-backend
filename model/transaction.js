@@ -39,7 +39,7 @@ class transaction {
         "SELECT transactions.*, personal_accounts.personal_id, personal_accounts.costumer_id, paypulp_costumers.user_uuid, paypulp_costumers.costumer_id, paypulp_costumers.first_name  FROM transactions INNER JOIN personal_accounts ON transactions.personal_id = personal_accounts.personal_id INNER JOIN business_accounts ON transactions.business_id = business_accounts.business_id INNER JOIN paypulp_costumers ON business_accounts.costumer_id = paypulp_costumers.costumer_id OR personal_accounts.costumer_id = paypulp_costumers.costumer_id WHERE user_uuid= ($1)",[userUuid]
       );
       pgClient.end();
-      return queryRes.rows
+      return queryRes.rows;
     };
 
     static getNewTransaction= async (newTransaction) => {
