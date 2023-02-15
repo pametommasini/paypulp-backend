@@ -61,6 +61,8 @@ class UserManager {
     return queryRes.rows;
   };
 
+  
+
 };
 
 module.exports = UserManager;
