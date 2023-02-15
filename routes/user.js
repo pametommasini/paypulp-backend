@@ -15,9 +15,10 @@ router.post('/login', require('../controllers/loginController'));
 router.post('/signup', require('../controllers/signupController'));
 
 // payment methods
-router.get('/:userUuid/paymentmethods', require('../controllers/getPayment'));
+// router.get('/:userUuid/paymentmethods', require('../controllers/getPayment'));
 
-router.post('/:userUuid/paymentmethods', require('../controllers/postPayment'));
+// router.post('/:userUuid/paymentmethods', require('../controllers/postPayment'));
 
-router.delete('/:userUuid/paymentmethods', require('../controllers/deletePayment'))
+// router.delete('/:userUuid/paymentmethods', require('../controllers/deletePayment'))
+
 module.exports = router;
