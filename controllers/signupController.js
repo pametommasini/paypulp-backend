@@ -29,7 +29,7 @@ const signupController = async (req, res) => {
             resUsers = dbUsers.rows[0];
     } catch (error) {
         console.log(error);
-        res.status(401).json("Incomplete user information!").end;
+        return res.status(401).json("Incomplete user information!").end;
     } 
     //creation time
     const today = new Date();
@@ -43,7 +43,7 @@ const signupController = async (req, res) => {
             resCustomers = dbCustomers.rows[0];
     } catch (error) {
         console.log(error);
-        res.status(401).json("Incomplete customer information!").end;
+        return res.status(401).json("Incomplete customer information!").end;
     }
     delete resUsers.password;
     const token = jwt.sign({ email }, process.env.SECRET, {
