@@ -24,4 +24,5 @@ const loginController = async (req, res) => {
   const dbRes = await client.query("SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);", [userUuid]);
   res.json({token, dbRes, userUuid, userEmail, accountType, });
 }
+
 module.exports = loginController;

@@ -1,0 +1,7 @@
+FROM Node:18.14.0
+RUN mkdir /src
+WORKDIR /src
+ADD ./src /src
+RUN npm install
+EXPOSE 9091
+CMD node npm start

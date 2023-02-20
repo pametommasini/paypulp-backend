@@ -21,4 +21,8 @@ router.post('/:userUuid/paymentmethods', require('../controllers/postPayment'));
 
 router.delete('/:userUuid/paymentmethods', require('../controllers/deletePayment'))
 
+router.get('/:costumerId/userdata', require('../controllers/getUserData'));
+
+router.get('/:userUuid/username', require('../controllers/getUserName'));
+
 module.exports = router;
