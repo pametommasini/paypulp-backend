@@ -14,14 +14,18 @@ const loginController = async (req, res) => {
   if( email != dbClient.rows[0].email || md5Password != dbPassword ){
     return res.status(401).json("Invalid user or password!").end();
   }
+  const dbRes = await client.query("SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);", [userUuid]);
+  const userInfo = {
+    email: dbClient.rows[0].email,
+    userUuid: dbClient.rows[0].user_uuid,
+    accountType: dbClient.rows[0].account_type,
+    firstName: dbRes.rows[0].first_name,
+  }
   const token = jwt.sign({ email }, process.env.SECRET, {
     algorithm: 'HS256',
     expiresIn: 3000
   })
-  const userEmail = dbClient.rows[0].email;
-  const userUuid = dbClient.rows[0].user_uuid;
-  const accountType = dbClient.rows[0].account_type;
-  const dbRes = await client.query("SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);", [userUuid]);
-  res.json({token, dbRes, userUuid, userEmail, accountType, });
+  res.json({ token, userInfo });
 }
+
 module.exports = loginController;
