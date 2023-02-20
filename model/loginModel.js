@@ -45,5 +45,21 @@ class Login {
 }
 
 class LoginManager {
-    
+
+    static compareEmail = async (email) => {
+        const pgClient = await newClient();
+        const dbClient = await pgClient.query("SELECT * FROM users WHERE email = ($1)", [email]);
+        pgClient.end();
+        return dbClient;
+    }
+
+    static getName = async (userUuid) => {
+        const pgClient = await newClient();
+        const dbRes = await pgClient.query("SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);", [userUuid]);
+        const dbPayment = await pgClient.query("SELECT is_preferred FROM payment_methods WHERE ")
+        pgClient.end();
+        return dbRes;
+    }
 }
+
+module.exports = LoginManager;
