@@ -18,8 +18,6 @@ class Login {
         securityQuestion = null,
         securityQuestionAnswer = null,
         creationTime = null,
-        email = null,
-        accountType = null,
         password = null
     ) {
         this.userId = userId;
@@ -56,7 +54,7 @@ class LoginManager {
     static getName = async (userUuid) => {
         const pgClient = await newClient();
         const dbRes = await pgClient.query("SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);", [userUuid]);
-        const dbPayment = await pgClient.query("SELECT is_preferred FROM payment_methods WHERE ")
+        // const dbPayment = await pgClient.query("SELECT is_preferred FROM payment_methods WHERE ")
         pgClient.end();
         return dbRes;
     }
