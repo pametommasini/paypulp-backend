@@ -1,5 +1,5 @@
-const LoginManager = require('../model/loginModel');
-const jwt = require('jsonwebtoken');
+const LoginManager = require("../model/loginModel");
+const jwt = require("jsonwebtoken");
 const newClient = require("../model/newClient");
 const CryptoJS = require("crypto-js");
 
@@ -7,12 +7,12 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
   const md5Password = CryptoJS.MD5(password).toString();
   const dbEmail = await LoginManager.compareEmail(email);
-  if(dbEmail.rows.length === 0){
+  if (dbEmail.rows.length === 0) {
     return res.status(401).json("User not found!").end();
   }
   const dbPassword = dbEmail.rows[0].password;
   const userUuid = dbEmail.rows[0].user_uuid;
-  if( email != dbEmail.rows[0].email || md5Password != dbPassword ){
+  if (email != dbEmail.rows[0].email || md5Password != dbPassword) {
     return res.status(401).json("Invalid user or password!").end();
   }
   const dbName = await LoginManager.getName(userUuid);
@@ -21,12 +21,12 @@ const loginController = async (req, res) => {
     userUuid: dbEmail.rows[0].user_uuid,
     accountType: dbEmail.rows[0].account_type,
     firstName: dbName.rows[0].first_name,
-  }
+  };
   const token = jwt.sign({ userUuid }, process.env.SECRET, {
-    algorithm: 'HS256',
-    expiresIn: 3000
-  })
+    algorithm: "HS256",
+    expiresIn: 3000,
+  });
   res.json({ token, userInfo });
-}
+};
 
 module.exports = loginController;
