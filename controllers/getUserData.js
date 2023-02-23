@@ -1,7 +1,7 @@
 const UserDataManager = require('../model/userData');
 
 const getUserData = async (req, res) => {
-    const dbRes = await UserDataManager.getUserData(req.params.costumerId);
+    const dbRes = await UserDataManager.getUserData(req.userUuid);
     res.status(200).json(dbRes);
   }
   

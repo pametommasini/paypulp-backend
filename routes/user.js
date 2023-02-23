@@ -3,7 +3,7 @@ var router = express.Router();
 
 // User data
 
-router.get('/:costumerId/userdata', require('../controllers/getUserData'));
+router.get('/userdata', require('../controllers/getUserData'));
 
 router.delete('/:userUuid', require("../controllers/deleteUser"));
 
