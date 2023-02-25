@@ -11,7 +11,7 @@ class PaypulpCustomer {
     lastName = null,
     phone = null,
     birthDate = null,
-    adress = null,
+    address = null,
     city = null,
     country = null,
     timeZone = null,
@@ -28,7 +28,7 @@ class PaypulpCustomer {
     this.lastName = lastName;
     this.phone = phone;
     this.birthDate = birthDate;
-    this.adress = adress;
+    this.address = address;
     this.city = city;
     this.country = country;
     this.timeZone = timeZone;
