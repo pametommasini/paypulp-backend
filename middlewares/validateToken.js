@@ -5,8 +5,8 @@ const validateToken = (req, res, next) => {
     if (!token) return res.status(401).json({ error: 'Access denied' })
     try {
         const userVerified = jwt.verify(token, process.env.SECRET)
-        req.user = userVerified
-        next()
+        req.userUuid = userVerified;
+        next();
     } catch (error) {
         res.status(400).json({error: 'invalid token'})
     }
