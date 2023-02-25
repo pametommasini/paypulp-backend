@@ -50,6 +50,7 @@ class SignupManager {
             const dbUsers = await pgClient.query('INSERT INTO users (user_uuid, email, account_type, password) VALUES (($1), ($2), ($3), ($4)) RETURNING *',
                 [userUuid, email, accountType, md5Password]);
             pgClient.end();
+            console.log(dbUsers)
             return dbUsers;
         } catch (error) {
             return error;
@@ -68,29 +69,6 @@ class SignupManager {
             return error;
         }
     }
-
-    static getInfo = async (userUuid) => {
-        const pgClient = await newClient();
-        try {
-            const dbInfo = await pgClient.query(
-                "SELECT  payment_methods.*, paypulp_costumers.first_name, personal_accounts.costumer_id FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_costumers ON personal_accounts.costumer_id = paypulp_costumers.costumer_id WHERE user_uuid = ($1);", [userUuid]);
-                return dbInfo;
-        } catch(error) {
-            return error;
-        }
-    }
-
-    static getPlusInfo = async (email) => {
-        const pgClient = await newClient();
-        try {
-        const dbClient = await pgClient.query("SELECT * FROM users WHERE email = ($1)", [email]);
-        pgClient.end();
-        return dbClient
-        } catch(error) {
-            return error
-        }
-    }
-    
 }
 
 module.exports = SignupManager;
