@@ -41,6 +41,19 @@ class  product {
         return queryRes.rows;
     };
 
+    /*static updateProduct = async (changeProduct) =>{
+        const pgClient = await newClient ();
+        const queryRes = await pgClient.query (
+            "UPDATE products SET product_name= $1, product_type= $2, price= $3  WHERE product_uuid= $4", [changeProduct.productName, changeProduct.productType, changeProduct.price, changeProduct.productUuid]
+        );
+        pgClient.end();
+        //console.log(queryRes.rows)  
+        if(!queryRes){
+            return null;
+        }
+        return queryRes.rows;
+    }; */
+
     static createNewProduct = async (newProduct) => {
         const pgClient = await newClient();
         const queryRes = await pgClient.query (
