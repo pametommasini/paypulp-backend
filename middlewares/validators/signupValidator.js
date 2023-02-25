@@ -39,11 +39,11 @@ const validateSignup = [
     .withMessage("Birth date param doesn't exist!")
     .notEmpty()
     .withMessage("Birth date param is empty!"),
-    check("adress")
+    check("address")
     .exists()
-    .withMessage("Adress param doesn't exist!")
+    .withMessage("Address param doesn't exist!")
     .notEmpty()
-    .withMessage("Adress param is empty!"),
+    .withMessage("Address param is empty!"),
     check("city")
     .exists()
     .withMessage("City param doesn't exist!")
@@ -70,7 +70,6 @@ const validateSignup = [
     .notEmpty()
     .withMessage("Security question answer param is empty!"),
     (req, res, next) => {
-        console.log(req)
         validateResult(req, res, next)
     }
 ]

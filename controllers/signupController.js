@@ -32,16 +32,19 @@ const signupController = async (req, res) => {
     const creationTime = today.toLocaleString('en-US', options);
     
     const dbCustomers = await SignupManager.insertCostumers(userUuid, req.body, creationTime);
-
-    const dbName = await SignupManager.getInfo(userUuid);
-
-    const dbEmail = await SignupManager.getPlusInfo(email);
     
     const userInfo = {
-        email: dbEmail.rows[0].email,
-        userUuid: dbEmail.rows[0].user_uuid,
-        accountType: dbEmail.rows[0].account_type,
-        firstName: dbName.rows[0].first_name,
+        email: dbUsers.rows[0].email,
+        accountType: dbUsers.rows[0].account_type,
+        firstName: dbCustomers.rows[0].first_name,
+        lastName: dbCustomers.rows[0].last_name,
+        phone: dbCustomers.rows[0].phone,
+        birthDate: dbCustomers.rows[0].birth_date,
+        adress: dbCustomers.rows[0].adress,
+        city: dbCustomers.rows[0].city,
+        country: dbCustomers.rows[0].country,
+        timeZone: dbCustomers.rows[0].time_zone,
+        creationTime: creationTime,
         payMethodId: null,
         payMethodUuid: null,
         personalId: null,
