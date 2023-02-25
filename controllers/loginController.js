@@ -1,5 +1,5 @@
-const LoginManager = require('../model/loginModel');
-const jwt = require('jsonwebtoken');
+const LoginManager = require("../model/loginModel");
+const jwt = require("jsonwebtoken");
 const newClient = require("../model/newClient");
 const CryptoJS = require("crypto-js");
 
@@ -36,10 +36,10 @@ const loginController = async (req, res) => {
 
   console.log(dbName);
   const token = jwt.sign({ userUuid }, process.env.SECRET, {
-    algorithm: 'HS256',
-    expiresIn: 3000
-  })
+    algorithm: "HS256",
+    expiresIn: 3000,
+  });
   res.json({ token, userInfo });
-}
+};
 
 module.exports = loginController;
