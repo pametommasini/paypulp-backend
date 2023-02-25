@@ -19,7 +19,7 @@ router.get('/:userUuid/paymentmethods', require('../controllers/getPayment'));
 
 router.post('/:userUuid/paymentmethods', require('../controllers/postPayment'));
 
-router.delete('/:userUuid/paymentmethods', require('../controllers/deletePayment'))
+router.delete('/:userUuid/paymentmethods', require('../controllers/deletePayment'));
 
 
 module.exports = router;

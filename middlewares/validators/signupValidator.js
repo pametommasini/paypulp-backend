@@ -1,63 +1,78 @@
-const { check } = require('express-validator');
+const { check, body } = require('express-validator');
 const { validateResult } = require('./validateHelper');
 
 const validateSignup = [
-    check(email)
+    check("email")
     .exists()
-    .not()
+    .withMessage("Email param doesn't exist!")
     .isEmail()
-    .isEmpty(),
-    check(password)
+    .withMessage("Incorrect email param format!")
+    .notEmpty()
+    .withMessage("Email param is empty"),
+    check("password")
     .exists()
-    .not()
-    .isEmpty(),
-    check(accountType)
+    .withMessage("Password param doesn't exist!")
+    .notEmpty()
+    .withMessage("Password param is empty"),
+    check("accountType")
     .exists()
-    .not()
-    .isEmpty(),
-    check(firstName)
+    .withMessage("Account type param doesn't exist!")
+    .notEmpty()
+    .withMessage("Account type param is empty!"),
+    check("firstName")
     .exists()
-    .not()
-    .isEmpty(),
-    check(lastName)
+    .withMessage("First name param doesn't exist!")
+    .notEmpty()
+    .withMessage("First name param is empty!"),
+    check("lastName")
     .exists()
-    .not()
-    .isEmpty(),
-    check(phone)
+    .withMessage("Last name param doesn't exist!")
+    .notEmpty()
+    .withMessage("Last name param is empty!"),
+    check("phone")
     .exists()
-    .not()
-    .isEmpty(),
-    check(birthDate)
+    .withMessage("Phone param doesn't exist!")
+    .notEmpty()
+    .withMessage("Phone param is empty!"),
+    check("birthDate")
     .exists()
-    .not()
-    .isEmpty(),
-    check(adress)
+    .withMessage("Birth date param doesn't exist!")
+    .notEmpty()
+    .withMessage("Birth date param is empty!"),
+    check("adress")
     .exists()
-    .not()
-    .isEmpty(),
-    check(city)
+    .withMessage("Adress param doesn't exist!")
+    .notEmpty()
+    .withMessage("Adress param is empty!"),
+    check("city")
     .exists()
-    .not()
-    .isEmpty(),
-    check(country)
+    .withMessage("City param doesn't exist!")
+    .notEmpty()
+    .withMessage("City param is empty!"),
+    check("country")
     .exists()
-    .not()
-    .isEmpty(),
-    check(timeZone)
+    .withMessage("Country param doesn't exist!")
+    .notEmpty()
+    .withMessage("Country param is empty!"),
+    check("timeZone")
     .exists()
-    .not()
-    .isEmpty(),
-    check(securityQuestion)
+    .withMessage("Time zone param doesn't exist!")
+    .notEmpty()
+    .withMessage("Time zone param is empty!"),
+    check("securityQuestion")
     .exists()
-    .not()
-    .isEmpty(),
-    check(securityQuestionAnswer)
+    .withMessage("Security question param doesn't exist!")
+    .notEmpty()
+    .withMessage("Security question param is empty!"),
+    check("securityQuestionAnswer")
     .exists()
-    .not()
-    .isEmpty(),
+    .withMessage("Security question answer param doesn't exist!")
+    .notEmpty()
+    .withMessage("Security question answer param is empty!"),
     (req, res, next) => {
+        console.log(req)
         validateResult(req, res, next)
     }
 ]
 
-module.exports = validateSignup;
+module.exports = { validateSignup };
