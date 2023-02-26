@@ -5,7 +5,9 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config({ path: "./.env" });
 const validateToken = require("./middlewares/validateToken");
-
+const { validateResult } = require('./middlewares/validators/validateHelper');
+const { validateSignup } = require('./middlewares/validators/signupValidator');
+const { validateLogin } = require('./middlewares/validators/loginValidator');
 const app = express();
 
 // middlewares
@@ -14,15 +16,14 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-//app.use("/private", validateToken, require("./routes"));
-
+// app.use("/private", validateToken, require("./routes"));
 
 // public routes
-app.post("/login", require("./controllers/loginController"));
-app.post("/signup", require("./controllers/signupController"));
+app.post("/login", validateLogin, require("./controllers/loginController"));
+app.post("/signup", validateSignup, validateResult, require("./controllers/signupController"));
 
 // routes
-app.use("/private", require("./routes"));
+ app.use("/private", require("./routes"));
 
 /* // catch 404 and forward to error handler
 app.use(function (req, res, next) {
