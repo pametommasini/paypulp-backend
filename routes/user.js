@@ -6,7 +6,7 @@ const { validateLogin } = require('../middlewares/validators/loginValidator');
 
 // User data
 
-router.get('/:costumerId/userdata', require('../controllers/Users/getUserData'));
+router.get('/userdata', require('../controllers/getUserData'));
 
 router.delete('/:userUuid', require("../controllers/Users/deleteUser"));
 // login
