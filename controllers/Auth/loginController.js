@@ -1,6 +1,6 @@
-const LoginManager = require("../model/loginModel");
+const LoginManager = require("../../model/loginModel");
 const jwt = require("jsonwebtoken");
-const newClient = require("../model/newClient");
+const newClient = require("../../model/newClient");
 const CryptoJS = require("crypto-js");
 
 const loginController = async (req, res) => {

@@ -1,4 +1,4 @@
-const UserDataManager = require('../model/userData');
+const UserDataManager = require('../../model/userData');
 
 const getUserName = async (req, res) => {
     const dbRes = await UserDataManager.getUserName(req.params.userUuid);

@@ -1,4 +1,4 @@
-const TransactionManager = require("../model/transaction");
+const TransactionManager = require("../../model/transaction");
 
 const getTransaction = async (req, res) => {
   const dbRes = await TransactionManager.getTransaction(req.params.userUuid);

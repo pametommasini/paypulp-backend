@@ -1,4 +1,4 @@
-const PaymentMethodManager = require('../model/paymentMethod');
+const PaymentMethodManager = require('../../model/paymentMethod');
 
 const getPayments = async (req, res) => {
     console.log(req.params.userUuid)

@@ -1,4 +1,4 @@
-const  UserManager = require("../model/user");
+const  UserManager = require("../../model/user");
 
 const deleteUser = async (req, res) => {
     const dbRes = await UserManager.deleteUser(req.params.userUuid);
