@@ -50,7 +50,7 @@ class transaction {
         );
       pgClient.end();
       return queryRes.rows[0];
-    }
+    };
   }
 
   module.exports = TransactionManager;
