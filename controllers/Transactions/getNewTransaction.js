@@ -1,4 +1,4 @@
-const TransactionManager = require("../model/transaction");
+const TransactionManager = require("../../model/transaction");
 
 const getNewTransaction = async (req, res) => {
   console.log(req.body)

@@ -1,4 +1,4 @@
-const  ProductManager = require("../model/product");
+const  ProductManager = require("../../model/product");
 
 const getProduct = async (req, res) => {
     const dbRes = await ProductManager.getProduct(req.params.productId);

@@ -1,4 +1,4 @@
-const PaymentMethodManager = require('../model/paymentMethod');
+const PaymentMethodManager = require('../../model/paymentMethod');
 
 const postPayment = async (req, res) => {
     const dbRes = await PaymentMethodManager.postPayment(req.body);

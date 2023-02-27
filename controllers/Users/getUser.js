@@ -1,4 +1,4 @@
-const UserManager = require("../model/user");
+const UserManager = require("../../model/user");
 
 const getUser = async (req, res) => {
   const dbRes = await UserManager.getUser(req.params.userUuid);

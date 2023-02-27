@@ -19,8 +19,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // app.use("/private", validateToken, require("./routes"));
 
 // public routes
-app.post("/login", validateLogin, require("./controllers/loginController"));
-app.post("/signup", validateSignup, validateResult, require("./controllers/signupController"));
+app.post("/login", validateLogin, require("./controllers/Auth/loginController"));
+app.post("/signup", validateSignup, validateResult, require("./controllers/Auth/signupController"));
 
 // routes
  app.use("/private", require("./routes"));

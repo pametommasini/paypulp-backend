@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const newClient = require("../model/newClient");
+const newClient = require("../../model/newClient");
 const CryptoJS = require("crypto-js");
 const { v4: uuidv4 } = require('uuid');
-const SignupManager = require('../model/signupModel');
+const SignupManager = require('../../model/signupModel');
 
 const signupController = async (req, res) => {
     const client = await newClient();
