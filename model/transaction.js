@@ -46,11 +46,11 @@ class transaction {
       const pgClient = await newClient ();
       const queryRes = await pgClient.query (
         "INSERT INTO transactions (business_id, personal_id, pay_method_uuid, product_uuid, total_amount, date_time, went_trough) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7)) RETURNING *",
-        [newTransaction.businessId, newTransaction.personalId, newTransaction.payMethodUuid, newTransaction.productUuid, newTransaction.totalAmount, newTransaction.dateTime, newTransaction.wentThrough]
+        [newTransaction.businessId, newTransaction.personalId, newTransaction.payMethodUuid, newTransaction.productUuid, newTransaction.totalAmount, newTransaction.dateTime, newTransaction.wentTrough]
         );
       pgClient.end();
       return queryRes.rows[0];
-    }
+    };
   }
 
   module.exports = TransactionManager;
