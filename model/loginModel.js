@@ -58,7 +58,6 @@ class LoginManager {
         try{
         const dbRes = await pgClient.query("SELECT  payment_methods.*, paypulp_costumers.first_name, personal_accounts.costumer_id FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_costumers ON personal_accounts.costumer_id = paypulp_costumers.costumer_id WHERE user_uuid = ($1);", [userUuid]);
         pgClient.end();
-        console.log(dbRes)
         return dbRes;
         } catch(error){
             return error;
