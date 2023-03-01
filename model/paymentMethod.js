@@ -41,6 +41,7 @@ class PaymentMethodManager {
         [userUuid]
       );
       pgClient.end();
+      if (prefQueryRes.rows.length === 0) return [];
       const preferredPaymentMethod = [dataToPaymentMethod(prefQueryRes.rows[0])];
       return preferredPaymentMethod;
     } else {
