@@ -32,11 +32,11 @@ const validateTransaction = [
     .withMessage("Date time param doesn't exist")
     .notEmpty()
     .withMessage("Date time param is empty"),
-    check("wentTrough")
+    check("wentThrough")
     .exists()
-    .withMessage("Went trough param doesn't exist")
+    .withMessage("Went through param doesn't exist")
     .notEmpty()
-    .withMessage("Went trough param is empty"),
+    .withMessage("Went through param is empty"),
     (req, res, next) => {
         validateResult(req, res, next)
     }

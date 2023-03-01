@@ -32,6 +32,11 @@ const signupController = async (req, res) => {
     const creationTime = today.toLocaleString('en-US', options);
     
     const dbCustomers = await SignupManager.insertCostumers(userUuid, req.body, creationTime);
+
+    let dbPersonalAccounts;
+    if (dbUsers.rows[0].account_type === 'personal') {
+        dbPersonalAccounts = await SignupManager.insertPersonalAccount(dbCustomers.rows[0].costumer_id)
+    }
     
     const userInfo = {
         email: dbUsers.rows[0].email,
