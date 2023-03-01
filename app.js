@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/private", validateToken, require("./routes"));
+//app.use("/private", validateToken, require("./routes"));
 
 // public routes
 app.post("/login", validateLogin, require("./controllers/Auth/loginController"));
