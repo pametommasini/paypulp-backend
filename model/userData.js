@@ -105,13 +105,13 @@ const dataToPersonalInfo = (dataFromDb) => {
 
 class UserDataManager {
   static getUserData = async (userUuid) => {
+    console.log(userUuid);
     const pgClient = await newClient();
     const dbRes = await pgClient.query(
       "SELECT * FROM users INNER JOIN paypulp_costumers ON users.user_uuid = paypulp_costumers.user_uuid INNER JOIN personal_accounts ON paypulp_costumers.costumer_id = personal_accounts.costumer_id WHERE users.user_uuid = ($1);",
       [userUuid]
     );
     pgClient.end();
-    if (dbRes.rows.length === 0) res.status(400).json({error: "no info on user has been found"})
     let userInfo = dataToPersonalInfo(dbRes.rows[0]);
     return userInfo;
   };
