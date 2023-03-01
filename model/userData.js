@@ -111,6 +111,7 @@ class UserDataManager {
       [userUuid]
     );
     pgClient.end();
+    if (dbRes.rows.length === 0) res.status(400).json({error: "no info on user has been found"})
     let userInfo = dataToPersonalInfo(dbRes.rows[0]);
     return userInfo;
   };

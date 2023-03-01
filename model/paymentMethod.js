@@ -50,7 +50,7 @@ class PaymentMethodManager {
         const pgClient = await newClient ();
         const queryRes = await pgClient.query (
           "INSERT INTO payment_methods (pay_method_uuid, personal_id, is_preferred, card_number, card_name, card_type, card_expiry_date, card_security_code) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)) RETURNING *",
-          [pay_method_uuid, newPayment.personal_id, newPayment.is_preferred, newPayment.card_number, newPayment.card_name, newPayment.card_type, newPayment.card_expiry_date, newPayment.card_security_code]
+          [pay_method_uuid, newPayment.personalId, newPayment.isPreferred, newPayment.cardNumber, newPayment.cardName, newPayment.cardType, newPayment.cardExpiryDate, newPayment.cardSecurityCode]
         );
         pgClient.end();
         return queryRes.rows[0];
