@@ -1,4 +1,5 @@
 const newClient = async () => await require("./newClient")();
+const { v4: uuidv4 } = require("uuid");
 
 class  product {
     constructor(
@@ -43,14 +44,14 @@ class  product {
 
     static createNewProduct = async (newProduct) => {
         const pgClient = await newClient();
+        const productUuid = uuidv4();
         const queryRes = await pgClient.query (
             "INSERT INTO products (product_uuid, business_id, product_name, product_type, product_description, image, price) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7)) RETURNING*",
-            [newProduct.productUuid, newProduct.businessId, newProduct.productName, newProduct.productType, newProduct.productDescription, newProduct.image, newProduct.price]
+            [productUuid, newProduct.businessId, newProduct.productName, newProduct.productType, newProduct.productDescription, newProduct.image, newProduct.price]
         );
         pgClient.end();  
         return queryRes.rows[0];    
     };
-    
-  }
+  };
 
   module.exports = ProductManager;
