@@ -65,4 +65,4 @@ class UserManager {
 
 };
 
-module.exports = UserManager;
+module.exports = { User, UserManager};

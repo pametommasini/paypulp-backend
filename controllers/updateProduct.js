@@ -1,4 +1,4 @@
-/*const   ProductManager  = require("../model/product");
+const   ProductManager  = require("../model/product");
 
 
 const updateProduct = async (req, res) => {
@@ -8,12 +8,12 @@ const updateProduct = async (req, res) => {
       productType : req.body.productType,
       price : req.body.price,
     };
-    //console.log(updateProduct)
+    //console.log("hola", updateProduct)
     try {
     const dbRes = await ProductManager.updateProduct(updateProduct);
-    //console.log(updateProduct)
+    //console.log("holii", updateProduct)
     if(dbRes){
-    console.log(dbRes)
+   //console.log("pp", dbRes)
       return res.status(200).json(dbRes);
     }
       return res.status(400).send();
@@ -21,6 +21,7 @@ const updateProduct = async (req, res) => {
     catch (error) {
       return res.status(500).send();
     }
+    
   };
   
-  module.exports = updateProduct;*/
+  module.exports = updateProduct;
