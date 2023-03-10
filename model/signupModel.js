@@ -106,8 +106,23 @@ class SignupManager {
         [costumer_id]
       );
       pgClient.end();
-      if (dbPersonalAccounts.rows === 0) throw new Error({error: "Personal account row not inserted correctly"})
       const newPersonalAccount = dataToPersonalAccount(dbPersonalAccounts.rows[0]);
+      return newPersonalAccount;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
+  
+  static insertBusinessAccount = async (costumerId) => {
+    const pgClient = await newClient();
+    try {
+      const dbBusinessAccounts = await pgClient.query(
+        "INSERT INTO personal_accounts (costumer_id) VALUES (($1)) RETURNING *",
+        [costumerId]
+      );
+      pgClient.end();
+      const newPersonalAccount = dataToPersonalAccount(dbBusinessAccounts.rows[0]);
       return newPersonalAccount;
     } catch (error) {
       console.log(error);

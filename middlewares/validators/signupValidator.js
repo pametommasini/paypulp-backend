@@ -49,11 +49,6 @@ const validateSignup = [
     .withMessage("City param doesn't exist!")
     .notEmpty()
     .withMessage("City param is empty!"),
-    check("country")
-    .exists()
-    .withMessage("Country param doesn't exist!")
-    .notEmpty()
-    .withMessage("Country param is empty!"),
     check("timeZone")
     .exists()
     .withMessage("Time zone param doesn't exist!")

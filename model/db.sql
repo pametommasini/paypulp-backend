@@ -56,7 +56,6 @@ CREATE TABLE business_accounts (
 	"web_page" varchar(255),
 	"cif" varchar(40) NOT NULL,
 	"industry" varchar(40) NOT NULL,
-	"country" varchar(100) NOT NULL,
 	"bank_account_number" varchar(20) NOT NULL
 );
 
