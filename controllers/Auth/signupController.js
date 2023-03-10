@@ -25,6 +25,9 @@ const signupController = async (req, res) => {
     const md5Password = CryptoJS.MD5(password).toString();
     // llamada al modelo
     const dbUsers = await SignupManager.insertUsers(email, accountType, userUuid, md5Password);
+    if(dbUsers.rows?.length === 0){
+        return res.status(401).json("Signup failed in data base!").end();
+      }
  
     //creation time
     const today = new Date();
@@ -32,10 +35,17 @@ const signupController = async (req, res) => {
     const creationTime = today.toLocaleString('en-US', options);
     
     const dbCustomers = await SignupManager.insertCostumers(userUuid, req.body, creationTime);
+    if(dbCustomers.rows?.length === 0){
+        return res.status(401).json("Signup failed in data base!").end();
+      }
+ 
 
     let dbPersonalAccounts;
     if (dbUsers.rows[0].account_type === 'personal') {
         dbPersonalAccounts = await SignupManager.insertPersonalAccount(dbCustomers.rows[0].costumer_id)
+        if(dbPersonalAccounts.rows?.length === 0){
+            return res.status(401).json("Insert costumer failed!")
+        }
     }
     
     const userInfo = {

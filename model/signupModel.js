@@ -99,7 +99,6 @@ class SignupManager {
   };
 
   static insertPersonalAccount = async (costumer_id) => {
-    console.log("cos id", costumer_id)
     const pgClient = await newClient();
     try {
       const dbPersonalAccounts = await pgClient.query(
