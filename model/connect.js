@@ -15,6 +15,5 @@ require("dotenv").config();
   const res = await newClient.query("SELECT $1::text as connected", [
     "Connection to postgres successful!",
   ]);
-  console.log(res.rows[0].connected);
   await newClient.end();
 })();
