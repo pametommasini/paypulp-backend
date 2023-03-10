@@ -16,7 +16,7 @@ const getUserData = async (req, res) => {
     userUuid,
     { ispreferred: true }
   );
-  if(paymentMethods.rows.length === 0){
+  if(paymentMethods.rows?.length === 0){
     return res.status(401).json("Payment not found!").end();
   }
 
