@@ -1,7 +1,7 @@
 const  ProductManager = require("../../model/product");
 
 const getProduct = async (req, res) => {
-    const dbRes = await ProductManager.getProduct(req.params.productId);
+    const dbRes = await ProductManager.getProduct(req.params.productUuid);
     if(dbRes.rows?.length === 0){
       return res.status(401).json("Product not found!").end();
     }

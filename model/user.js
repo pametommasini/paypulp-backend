@@ -28,7 +28,6 @@ class UserManager {
     const pgClient = await newClient();
     const queryRes = await pgClient.query("SELECT * FROM users");
     pgClient.end();
-    /*console.log(queryRes)*/
         return queryRes.rows;
   };
   
@@ -52,4 +51,4 @@ class UserManager {
   };
 };
 
-module.exports = UserManager;
+module.exports = { User, UserManager};

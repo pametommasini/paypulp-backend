@@ -4,7 +4,10 @@ const { validateProduct } = require('../middlewares/validators/productValidator'
 
 router.get('/', require("../controllers/Products/getAllProducts"));
 
-router.get('/:productId', require("../controllers/Products/getProduct"));
+router.get('/:productUuid', require("../controllers/Products/getProduct"));
+
+
+router.patch('/:productUuid', require("../controllers/Products/updateProduct"));
 
 router.post('/', validateProduct, require("../controllers/Products/createNewProduct"));
 

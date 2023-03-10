@@ -108,7 +108,6 @@ class SignupManager {
       pgClient.end();
       if (dbPersonalAccounts.rows === 0) throw new Error({error: "Personal account row not inserted correctly"})
       const newPersonalAccount = dataToPersonalAccount(dbPersonalAccounts.rows[0]);
-      console.log("model",dbPersonalAccounts.rows)
       return newPersonalAccount;
     } catch (error) {
       console.log(error);
