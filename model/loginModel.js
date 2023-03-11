@@ -41,19 +41,19 @@ class Login {
 }
 
 class LoginManager {
-  static compareEmail = async (email) => {
-    const pgClient = await newClient();
-    try {
-      const dbClient = await pgClient.query(
-        "SELECT * FROM users WHERE email = ($1)",
-        [email]
-      );
-      pgClient.end();
-      return dbClient;
-    } catch (error) {
-      return error;
-    }
-  };
+  // static getUserByEmail = async (email) => {
+  //   const pgClient = await newClient();
+  //   try {
+  //     const dbClient = await pgClient.query(
+  //       "SELECT * FROM users WHERE email = ($1)",
+  //       [email]
+  //     );
+  //     pgClient.end();
+  //     return dbClient;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // };
 
   static getName = async (userUuid) => {
     const pgClient = await newClient();

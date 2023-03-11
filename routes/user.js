@@ -1,18 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const { validateSignup } = require('../middlewares/validators/signupValidator');
-const { validateLogin } = require('../middlewares/validators/loginValidator');
 const { validatePayment } = require('../middlewares/validators/paymentValidator');
 
 // User data
-
-router.get('/userdata', require('../controllers/Users/getUserData'));
+router.get('/userdata', require('../controllers/Users/getCustomerData'));
 
 router.delete('/:userUuid', require("../controllers/Users/deleteUser"));
-// login
-router.post('/login', validateLogin, require('../controllers/Auth/loginController'));
-// signup
-router.post('/signup', validateSignup, require('../controllers/Auth/signupController'));
 
 // payment methods
 router.get('/paymentmethods', require('../controllers/Payments/getPayment'));
