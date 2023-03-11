@@ -52,7 +52,7 @@ class PersonalAccount {
 class BusinessAccount {
   constructor(
     businessId = null,
-    Id = null,
+    customerId = null,
     businessName = null,
     businessType = null,
     businessDescription = null,
@@ -62,7 +62,7 @@ class BusinessAccount {
     bankAccountNumber = null
   ) {
     this.businessId = businessId;
-    this.Id = Id;
+    this.customerId = customerId;
     this.businessName = businessName;
     this.businessType = businessType;
     this.businessDescription = businessDescription;
@@ -76,14 +76,14 @@ class BusinessAccount {
 const dataToPersonalAccount = (dataFromDb) => {
   const personalAccount = new PersonalAccount(
     (personalId = dataFromDb.personal_id),
-    (Id = dataFromDb._id)
+    (customerId = dataFromDb.customer_id)
   );
   return personalAccount;
 };
 
 const dataToBusinessAccount = (dataFromDb) => {
-  const businessAccount = new PersonalAccount(
-    (Id = dataFromDb._id),
+  const businessAccount = new BusinessAccount(
+    (customerId = dataFromDb.customer_id),
     (businessId = dataFromDb.business_id),
     (businessName = dataFromDb.business_name),
     (businessType = dataFromDb.business_type),
@@ -183,3 +183,4 @@ class SignupManager {
 }
 
 module.exports = SignupManager;
+module.exports = dataToBusinessAccount;

@@ -1,3 +1,5 @@
+const dataToBusinessAccount = require("./signupModel");
+
 const newClient = async () => await require("./newClient")();
 
 class PaypulpCustomer {
@@ -80,8 +82,8 @@ class PersonalAccount extends PaypulpCustomer {
   }
 }
 
-const dataToPersonalInfo = (dataFromDb) => {
-  const customerInfo = new PersonalAccount(
+const dataToCustomerInfo = (dataFromDb) => {
+  const customerInfo = new PaypulpCustomer(
     (userId = dataFromDb.user_id),
     (userUuid = dataFromDb.user_uuid),
     (email = dataFromDb.email),
@@ -97,8 +99,7 @@ const dataToPersonalInfo = (dataFromDb) => {
     (timeZone = dataFromDb.time_zone),
     (securityQuestion = dataFromDb.security_question),
     (securityQuestionAnswer = dataFromDb.security_question_answer),
-    (creationTime = dataFromDb.creation_time),
-    (personalId = dataFromDb.personal_id)
+    (creationTime = dataFromDb.creation_time)
   );
   return customerInfo;
 };
@@ -106,13 +107,44 @@ const dataToPersonalInfo = (dataFromDb) => {
 class UserDataManager {
   static getCustomerData = async (userUuid) => {
     const pgClient = await newClient();
-    const dbRes = await pgClient.query(
-      "SELECT * FROM users INNER JOIN paypulp_customers ON users.user_uuid = paypulp_customers.user_uuid INNER JOIN personal_accounts ON paypulp_customers.customer_id = personal_accounts.customer_id WHERE users.user_uuid = ($1);",
+    const dbCustomer = await pgClient.query(
+      "SELECT * FROM users INNER JOIN paypulp_customers ON users.user_uuid = paypulp_customers.user_uuid WHERE users.user_uuid = ($1);",
       [userUuid]
     );
-    pgClient.end();
-    let userInfo = dataToPersonalInfo(dbRes.rows[0]);
-    return userInfo;
+
+    if (dbCustomer.rows.length === 0) return;
+    let customerInfo = dataToCustomerInfo(dbCustomer.rows[0]);
+
+    if (customerInfo.accountType === "personal") {
+      const dbPersonal = await pgClient.query(
+        "SELECT personal_accounts.personal_id FROM paypulp_customers INNER JOIN personal_accounts ON paypulp_customers.customer_id = personal_accounts.customer_id WHERE paypulp_customers.customer_id = ($1);",
+        [customerInfo.customerId]
+      );
+      pgClient.end();
+
+      customerInfo = {
+        ...customerInfo,
+        personalId: dbPersonal.personal_id,
+      };
+      return customerInfo;
+    }
+
+    if (customerInfo.accountType === "business") {
+      const dbBusiness = await pgClient.query(
+        "SELECT business_accounts.* FROM paypulp_customers INNER JOIN business_accounts ON paypulp_customers.customer_id = business_accounts.customer_id WHERE paypulp_customers.customer_id = ($1);",
+        [customerInfo.customerId]
+      );
+      pgClient.end();
+
+      const businessAccountInfo = dataToBusinessAccount(dbBusiness.rows[0]);
+      customerInfo = {
+        ...customerInfo,
+        ...businessAccountInfo,
+      };
+      return customerInfo;
+    }
+
+    return customerInfo;
   };
 
   static getUserName = async (id) => {
