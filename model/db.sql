@@ -19,8 +19,8 @@ CREATE TABLE admin_accounts (
 
 
 
-CREATE TABLE paypulp_costumers (
-	"costumer_id" serial PRIMARY KEY NOT NULL UNIQUE,
+CREATE TABLE paypulp_customers (
+	"customer_id" serial PRIMARY KEY NOT NULL UNIQUE,
 	"user_uuid" varchar(40) NOT NULL,
 	"first_name" varchar(50) NOT NULL,
 	"last_name" varchar(50) NOT NULL,
@@ -42,14 +42,14 @@ CREATE TABLE paypulp_costumers (
 
 CREATE TABLE personal_accounts (
 	"personal_id" serial PRIMARY KEY NOT NULL,
-	"costumer_id" int NOT NULL
+	"customer_id" int NOT NULL
 );
 
 
 
 CREATE TABLE business_accounts (
 	"business_id" serial PRIMARY KEY NOT NULL UNIQUE,
-	"costumer_id" int NOT NULL UNIQUE,
+	"customer_id" int NOT NULL UNIQUE,
 	"business_name" varchar(50) NOT NULL UNIQUE,
 	"business_type" varchar(40) NOT NULL,
 	"business_description" text,
@@ -63,7 +63,7 @@ CREATE TABLE business_accounts (
 
 CREATE TABLE countries (
 	"country_id" serial PRIMARY KEY NOT NULL UNIQUE,
-	"costumer_id" int NOT NULL UNIQUE,
+	"customer_id" int NOT NULL UNIQUE,
 	"tax_percentage" smallint NOT NULL,
 	"phone_prefix" varchar(5) NOT NULL,
 	"currency" varchar(3) NOT NULL
@@ -114,13 +114,13 @@ CREATE TABLE transactions (
 
 ALTER TABLE "admin_accounts" ADD CONSTRAINT "admin_accounts_fk0" FOREIGN KEY ("user_uuid") REFERENCES "users"("user_uuid");
 
-ALTER TABLE "paypulp_costumers" ADD CONSTRAINT "paypulp_costumers_fk0" FOREIGN KEY ("user_uuid") REFERENCES "users"("user_uuid");
+ALTER TABLE "paypulp_customer" ADD CONSTRAINT "paypulp_customer_fk0" FOREIGN KEY ("user_uuid") REFERENCES "users"("user_uuid");
 
-ALTER TABLE "business_accounts" ADD CONSTRAINT "business_accounts_fk0" FOREIGN KEY ("costumer_id") REFERENCES "paypulp_costumers"("costumer_id");
+ALTER TABLE "business_accounts" ADD CONSTRAINT "business_accounts_fk0" FOREIGN KEY ("customer_id") REFERENCES "paypulp_customer"("customer_id");
 
-ALTER TABLE "personal_accounts" ADD CONSTRAINT "personal_accounts_fk0" FOREIGN KEY ("costumer_id") REFERENCES "paypulp_costumers"("costumer_id");
+ALTER TABLE "personal_accounts" ADD CONSTRAINT "personal_accounts_fk0" FOREIGN KEY ("customer_id") REFERENCES "paypulp_customer"("customer_id");
 
-ALTER TABLE "countries" ADD CONSTRAINT "countries_fk0" FOREIGN KEY ("costumer_id") REFERENCES "paypulp_costumers"("costumer_id");
+ALTER TABLE "countries" ADD CONSTRAINT "countries_fk0" FOREIGN KEY ("customer_id") REFERENCES "paypulp_customer"("customer_id");
 
 ALTER TABLE "products" ADD CONSTRAINT "products_fk0" FOREIGN KEY ("business_id") REFERENCES "business_accounts"("business_id");
 

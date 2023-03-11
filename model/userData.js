@@ -6,7 +6,7 @@ class PaypulpCustomer {
     userUuid = null,
     email = null,
     accountType = null,
-    costumerId = null,
+    customerId = null,
     firstName = null,
     lastName = null,
     phone = null,
@@ -23,7 +23,7 @@ class PaypulpCustomer {
     this.userUuid = userUuid;
     this.email = email;
     this.accountType = accountType;
-    this.costumerId = costumerId;
+    this.customerId = customerId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
@@ -44,7 +44,7 @@ class PersonalAccount extends PaypulpCustomer {
     userUuid,
     email,
     accountType,
-    costumerId,
+    customerId,
     firstName,
     lastName,
     phone,
@@ -63,7 +63,7 @@ class PersonalAccount extends PaypulpCustomer {
       userUuid,
       email,
       accountType,
-      costumerId,
+      customerId,
       firstName,
       lastName,
       phone,
@@ -86,7 +86,7 @@ const dataToPersonalInfo = (dataFromDb) => {
     (userUuid = dataFromDb.user_uuid),
     (email = dataFromDb.email),
     (accountType = dataFromDb.account_type),
-    (costumerId = dataFromDb.costumer_id),
+    (customerId = dataFromDb.customer_id),
     (firstName = dataFromDb.first_name),
     (lastName = dataFromDb.last_name),
     (phone = dataFromDb.phone),
@@ -107,7 +107,7 @@ class UserDataManager {
   static getCustomerData = async (userUuid) => {
     const pgClient = await newClient();
     const dbRes = await pgClient.query(
-      "SELECT * FROM users INNER JOIN paypulp_costumers ON users.user_uuid = paypulp_costumers.user_uuid INNER JOIN personal_accounts ON paypulp_costumers.costumer_id = personal_accounts.costumer_id WHERE users.user_uuid = ($1);",
+      "SELECT * FROM users INNER JOIN paypulp_customers ON users.user_uuid = paypulp_customers.user_uuid INNER JOIN personal_accounts ON paypulp_customers.customer_id = personal_accounts.customer_id WHERE users.user_uuid = ($1);",
       [userUuid]
     );
     pgClient.end();
@@ -118,7 +118,7 @@ class UserDataManager {
   static getUserName = async (id) => {
     const pgClient = await newClient();
     const dbRes = await pgClient.query(
-      "SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);",
+      "SELECT first_name FROM paypulp_customers WHERE user_uuid = ($1);",
       [id]
     );
     pgClient.end();

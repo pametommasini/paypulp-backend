@@ -6,7 +6,7 @@ class Signup {
     userUuid = null,
     email = null,
     accountType = null,
-    costumerId = null,
+    Id = null,
     firstName = null,
     lastName = null,
     phone = null,
@@ -24,7 +24,7 @@ class Signup {
     this.userUuid = userUuid;
     this.email = email;
     this.accountType = accountType;
-    this.costumerId = costumerId;
+    this.Id = Id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
@@ -43,16 +43,16 @@ class Signup {
 }
 
 class PersonalAccount {
-  constructor(personalId = null, costumerId = null) {
+  constructor(personalId = null, Id = null) {
     this.personalId = personalId;
-    this.costumerId = costumerId;
+    this.Id = Id;
   }
 }
 
 class BusinessAccount {
   constructor(
     businessId = null,
-    costumerId = null,
+    Id = null,
     businessName = null,
     businessType = null,
     businessDescription = null,
@@ -62,7 +62,7 @@ class BusinessAccount {
     bankAccountNumber = null
   ) {
     this.businessId = businessId;
-    this.costumerId = costumerId;
+    this.Id = Id;
     this.businessName = businessName;
     this.businessType = businessType;
     this.businessDescription = businessDescription;
@@ -76,14 +76,14 @@ class BusinessAccount {
 const dataToPersonalAccount = (dataFromDb) => {
   const personalAccount = new PersonalAccount(
     (personalId = dataFromDb.personal_id),
-    (costumerId = dataFromDb.costumer_id)
+    (Id = dataFromDb._id)
   );
   return personalAccount;
 };
 
 const dataToBusinessAccount = (dataFromDb) => {
   const businessAccount = new PersonalAccount(
-    (costumerId = dataFromDb.costumer_id),
+    (Id = dataFromDb._id),
     (businessId = dataFromDb.business_id),
     (businessName = dataFromDb.business_name),
     (businessType = dataFromDb.business_type),
@@ -111,11 +111,11 @@ class SignupManager {
     }
   };
 
-  static insertCostumers = async (userUuid, body, creationTime) => {
+  static insertCustomer = async (userUuid, body, creationTime) => {
     const pgClient = await newClient();
     try {
       const dbCustomers = await pgClient.query(
-        "INSERT INTO paypulp_costumers (user_uuid, first_name, last_name, phone, birth_date, address, city, country, time_zone, security_question, security_question_answer, creation_time) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12)) RETURNING *",
+        "INSERT INTO paypulp_customers (user_uuid, first_name, last_name, phone, birth_date, address, city, country, time_zone, security_question, security_question_answer, creation_time) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12)) RETURNING *",
         [
           userUuid,
           body.firstName,
@@ -138,12 +138,12 @@ class SignupManager {
     }
   };
 
-  static insertPersonalAccount = async (costumer_id) => {
+  static insertPersonalAccount = async (_id) => {
     const pgClient = await newClient();
     try {
       const dbPersonalAccounts = await pgClient.query(
-        "INSERT INTO personal_accounts (costumer_id) VALUES (($1)) RETURNING *",
-        [costumer_id]
+        "INSERT INTO personal_accounts (customer_id) VALUES (($1)) RETURNING *",
+        [_id]
       );
       pgClient.end();
       const newPersonalAccount = dataToPersonalAccount(
@@ -156,13 +156,13 @@ class SignupManager {
     }
   };
 
-  static insertBusinessAccount = async (costumerId, body) => {
+  static insertBusinessAccount = async (Id, body) => {
     const pgClient = await newClient();
     try {
       const dbBusinessAccount = await pgClient.query(
-        "INSERT INTO business_accounts (costumer_id, business_name, business_type, business_description, web_page, cif, industry, bank_account_number) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)) RETURNING *",
+        "INSERT INTO business_accounts (customer_id, business_name, business_type, business_description, web_page, cif, industry, bank_account_number) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)) RETURNING *",
         [
-          costumerId,
+          Id,
           body.businessName,
           body.businessType,
           body.businessDescription,
