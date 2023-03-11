@@ -45,23 +45,6 @@ class UserManager {
       }
     };
 
-  // static getAllUsers = async () => {
-  //   const pgClient = await newClient();
-  //   const queryRes = await pgClient.query("SELECT * FROM users");
-  //   pgClient.end();
-  //   return queryRes.rows;
-  // };
-
-  // static getUser = async (userUuid) => {
-  //   const pgClient = await newClient();
-  //   const queryRes = await pgClient.query(
-  //     "SELECT * FROM users WHERE user_uuid = ($1)",
-  //     [userUuid]
-  //   );
-  //   pgClient.end();
-  //   return queryRes.rows;
-  // };
-
   static deleteUser = async (userUuid) => {
     const pgClient = await newClient();
     const queryRes = await pgClient.query(
