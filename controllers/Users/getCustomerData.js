@@ -1,11 +1,11 @@
 const PaymentMethodManager = require("../../model/paymentMethod");
 const UserDataManager = require("../../model/userData");
 
-const getUserData = async (req, res) => {
+const getCustomerData = async (req, res) => {
   let resData = {};
 
   try {
-    const userInfo = await UserDataManager.getUserData(req.userUuid);
+    const userInfo = await UserDataManager.getCustomerData(req.userUuid);
     resData = { userInfo };
   } catch (error) {
     console.error("error", error);
@@ -24,4 +24,4 @@ const getUserData = async (req, res) => {
   res.status(200).json(resData);
 };
 
-module.exports = getUserData;
+module.exports = getCustomerData;

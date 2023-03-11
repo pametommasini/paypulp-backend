@@ -1,25 +1,35 @@
 const LoginManager = require("../../model/loginModel");
 const jwt = require("jsonwebtoken");
-const newClient = require("../../model/newClient");
 const CryptoJS = require("crypto-js");
 const UserDataManager = require("../../model/userData");
 const PaymentMethodManager = require("../../model/paymentMethod");
+const { UserManager } = require("../../model/user");
+
+const encryptPassword = (password) => {
+  return CryptoJS.MD5(password).toString();
+}
+
+const errorRes = (code, message) => {
+  return res.status(code).json(message).end();
+}
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-  const md5Password = CryptoJS.MD5(password).toString();
+  const encryptedPassword = encryptPassword(password);
 
-  const dbEmail = await LoginManager.compareEmail(email);
-  if (dbEmail.rows.length === 0) {
-    return res.status(401).json("User not found!").end();
+  const dbUser = await UserManager.getUserByEmail(email);
+  if (!dbUser) {
+    return errorRes(400, "User not found")
   }
-  const dbPassword = dbEmail.rows[0].password;
-  const userUuid = dbEmail.rows[0].user_uuid;
-  if (email != dbEmail.rows[0].email || md5Password != dbPassword) {
+
+  const dbPassword = dbUser.password;
+  const userUuid = dbUser.userUuid
+
+  if (encryptedPassword != dbPassword) {
     return res.status(401).json("Invalid user or password!").end();
   }
 
-  const dbUserData = await UserDataManager.getUserData(userUuid);
+  const dbUserData = await UserDataManager.getCustomerData(userUuid);
   if(dbUserData.rows?.length === 0){
     return res.status(401).json("User not found!").end();
   }
@@ -29,10 +39,9 @@ const loginController = async (req, res) => {
     return res.status(401).json("Payment method not found!").end();
   }
 
+  delete dbUser.password
   const userInfo = {
-    email: dbEmail.rows[0].email,
-    userUuid: dbEmail.rows[0].user_uuid,
-    accountType: dbEmail.rows[0].account_type,
+    ...dbUser,
     ...dbUserData,
   };
 

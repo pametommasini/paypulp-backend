@@ -1,11 +1,9 @@
 const jwt = require("jsonwebtoken");
-const newClient = require("../../model/newClient");
 const CryptoJS = require("crypto-js");
 const { v4: uuidv4 } = require("uuid");
 const SignupManager = require("../../model/signupModel");
 
 const signupController = async (req, res) => {
-  const client = await newClient();
   const userUuid = uuidv4();
   const {
     email,
@@ -31,8 +29,10 @@ const signupController = async (req, res) => {
     userUuid,
     encryptedPassword
   );
+  if (dbUsers.code === 23505)
+    return res.status(400).json("Email already in use").end();
   if (!dbUsers.rows) {
-    return res.status(401).json("Signup failed in data base!").end();
+    return res.status(500).json("Signup failed in data base!").end();
   }
 
   //creation time
