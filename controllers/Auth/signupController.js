@@ -29,7 +29,8 @@ const signupController = async (req, res) => {
     userUuid,
     encryptedPassword
   );
-  if (dbUsers.code === 23505)
+  const dbUsersCode = parseInt(dbUsers.code)
+  if (dbUsersCode === 23505)
     return res.status(400).json("Email already in use").end();
   if (!dbUsers.rows) {
     return res.status(500).json("Signup failed in data base!").end();
@@ -49,21 +50,23 @@ const signupController = async (req, res) => {
     return res.status(401).json("Signup failed in data base!").end();
   }
 
-  let dbPersonalAccounts;
+  let dbPersonalAccount;
   if (dbUsers?.rows[0].account_type === "personal") {
-    dbPersonalAccounts = await SignupManager.insertPersonalAccount(
+    dbPersonalAccount = await SignupManager.insertPersonalAccount(
       dbCustomers.rows[0].costumer_id
     );
     if (!dbUsers.rows) {
       return res.status(500).json("Insert personal account failed");
     }
   }
-
+  
   if (dbUsers?.rows[0].account_type === "business") {
-    dbPersonalAccounts = await SignupManager.insertBusinessAccount(
-      dbCustomers.rows[0].costumer_id
+    dbPersonalAccount = await SignupManager.insertBusinessAccount(
+      dbCustomers.rows[0].costumer_id, req.body
     );
-    if (!dbUsers.rows) {
+    const dbCode = parseInt(dbPersonalAccount.code)
+    if (dbCode === 23505) return res.status(400).json("Business name already in use");
+    if (!dbPersonalAccount) {
       return res.status(500).json("Insert business account failed");
     }
   }
