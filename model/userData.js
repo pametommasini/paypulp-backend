@@ -1,4 +1,4 @@
-const dataToBusinessAccount = require("./signupModel");
+const {dataToBusinessAccount} = require("./signupModel");
 
 const newClient = async () => await require("./newClient")();
 
@@ -135,7 +135,7 @@ class UserDataManager {
         [customerInfo.customerId]
       );
       pgClient.end();
-
+      
       const businessAccountInfo = dataToBusinessAccount(dbBusiness.rows[0]);
       customerInfo = {
         ...customerInfo,

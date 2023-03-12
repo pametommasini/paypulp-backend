@@ -97,7 +97,7 @@ const dataToBusinessAccount = (dataFromDb) => {
 };
 
 class SignupManager {
-  static insertUsers = async (email, accountType, userUuid, md5Password) => {
+  static insertUser = async (email, accountType, userUuid, md5Password) => {
     const pgClient = await newClient();
     try {
       const dbUsers = await pgClient.query(
@@ -173,7 +173,7 @@ class SignupManager {
         ]
       );
       pgClient.end();
-      const businessAccount = dataToBusinessAccount(dbBusinessAccount.rows[0])
+      const businessAccount = dataToBusinessAccount(dbBusinessAccount.rows[0]);
       return businessAccount;
     } catch (error) {
       console.log(error);
@@ -182,5 +182,4 @@ class SignupManager {
   };
 }
 
-module.exports = SignupManager;
-module.exports = dataToBusinessAccount;
+module.exports = { SignupManager, dataToBusinessAccount };
