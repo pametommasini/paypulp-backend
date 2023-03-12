@@ -1,3 +1,5 @@
+const {dataToBusinessAccount} = require("./signupModel");
+
 const newClient = async () => await require("./newClient")();
 
 class PaypulpCustomer {
@@ -6,7 +8,7 @@ class PaypulpCustomer {
     userUuid = null,
     email = null,
     accountType = null,
-    costumerId = null,
+    customerId = null,
     firstName = null,
     lastName = null,
     phone = null,
@@ -23,7 +25,7 @@ class PaypulpCustomer {
     this.userUuid = userUuid;
     this.email = email;
     this.accountType = accountType;
-    this.costumerId = costumerId;
+    this.customerId = customerId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
@@ -44,7 +46,7 @@ class PersonalAccount extends PaypulpCustomer {
     userUuid,
     email,
     accountType,
-    costumerId,
+    customerId,
     firstName,
     lastName,
     phone,
@@ -63,7 +65,7 @@ class PersonalAccount extends PaypulpCustomer {
       userUuid,
       email,
       accountType,
-      costumerId,
+      customerId,
       firstName,
       lastName,
       phone,
@@ -80,13 +82,13 @@ class PersonalAccount extends PaypulpCustomer {
   }
 }
 
-const dataToPersonalInfo = (dataFromDb) => {
-  const customerInfo = new PersonalAccount(
+const dataToCustomerInfo = (dataFromDb) => {
+  const customerInfo = new PaypulpCustomer(
     (userId = dataFromDb.user_id),
     (userUuid = dataFromDb.user_uuid),
     (email = dataFromDb.email),
     (accountType = dataFromDb.account_type),
-    (costumerId = dataFromDb.costumer_id),
+    (customerId = dataFromDb.customer_id),
     (firstName = dataFromDb.first_name),
     (lastName = dataFromDb.last_name),
     (phone = dataFromDb.phone),
@@ -97,8 +99,7 @@ const dataToPersonalInfo = (dataFromDb) => {
     (timeZone = dataFromDb.time_zone),
     (securityQuestion = dataFromDb.security_question),
     (securityQuestionAnswer = dataFromDb.security_question_answer),
-    (creationTime = dataFromDb.creation_time),
-    (personalId = dataFromDb.personal_id)
+    (creationTime = dataFromDb.creation_time)
   );
   return customerInfo;
 };
@@ -106,19 +107,50 @@ const dataToPersonalInfo = (dataFromDb) => {
 class UserDataManager {
   static getCustomerData = async (userUuid) => {
     const pgClient = await newClient();
-    const dbRes = await pgClient.query(
-      "SELECT * FROM users INNER JOIN paypulp_costumers ON users.user_uuid = paypulp_costumers.user_uuid INNER JOIN personal_accounts ON paypulp_costumers.costumer_id = personal_accounts.costumer_id WHERE users.user_uuid = ($1);",
+    const dbCustomer = await pgClient.query(
+      "SELECT * FROM users INNER JOIN paypulp_customers ON users.user_uuid = paypulp_customers.user_uuid WHERE users.user_uuid = ($1);",
       [userUuid]
     );
-    pgClient.end();
-    let userInfo = dataToPersonalInfo(dbRes.rows[0]);
-    return userInfo;
+
+    if (dbCustomer.rows.length === 0) return;
+    let customerInfo = dataToCustomerInfo(dbCustomer.rows[0]);
+
+    if (customerInfo.accountType === "personal") {
+      const dbPersonal = await pgClient.query(
+        "SELECT personal_accounts.personal_id FROM paypulp_customers INNER JOIN personal_accounts ON paypulp_customers.customer_id = personal_accounts.customer_id WHERE paypulp_customers.customer_id = ($1);",
+        [customerInfo.customerId]
+      );
+      pgClient.end();
+
+      customerInfo = {
+        ...customerInfo,
+        personalId: dbPersonal.rows[0].personal_id,
+      };
+      return customerInfo;
+    }
+
+    if (customerInfo.accountType === "business") {
+      const dbBusiness = await pgClient.query(
+        "SELECT business_accounts.* FROM paypulp_customers INNER JOIN business_accounts ON paypulp_customers.customer_id = business_accounts.customer_id WHERE paypulp_customers.customer_id = ($1);",
+        [customerInfo.customerId]
+      );
+      pgClient.end();
+
+      const businessAccountInfo = dataToBusinessAccount(dbBusiness.rows[0]);
+      customerInfo = {
+        ...customerInfo,
+        ...businessAccountInfo,
+      };
+      return customerInfo;
+    }
+
+    return customerInfo;
   };
 
   static getUserName = async (id) => {
     const pgClient = await newClient();
     const dbRes = await pgClient.query(
-      "SELECT first_name FROM paypulp_costumers WHERE user_uuid = ($1);",
+      "SELECT first_name FROM paypulp_customers WHERE user_uuid = ($1);",
       [id]
     );
     pgClient.end();

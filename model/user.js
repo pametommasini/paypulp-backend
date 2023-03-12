@@ -38,7 +38,6 @@ class UserManager {
         pgClient.end();
         if (dbClient.rows.length === 0) return
         const user = dataToUser(dbClient.rows[0])
-        console.log(user)
         return user;
       } catch (error) {
         return error;

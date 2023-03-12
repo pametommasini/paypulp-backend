@@ -9,17 +9,13 @@ const encryptPassword = (password) => {
   return CryptoJS.MD5(password).toString();
 }
 
-const errorRes = (code, message) => {
-  return res.status(code).json(message).end();
-}
-
 const loginController = async (req, res) => {
   const { email, password } = req.body;
   const encryptedPassword = encryptPassword(password);
 
   const dbUser = await UserManager.getUserByEmail(email);
   if (!dbUser) {
-    return errorRes(400, "User not found")
+    return res.status(401).json("User not found").end();
   }
 
   const dbPassword = dbUser.password;
@@ -30,10 +26,10 @@ const loginController = async (req, res) => {
   }
 
   const dbUserData = await UserDataManager.getCustomerData(userUuid);
-  if(dbUserData.rows?.length === 0){
+  if(!dbUserData){
     return res.status(401).json("User not found!").end();
   }
-
+  console.log(dbUserData)
   const paymentMethods = await PaymentMethodManager.getPaymentMethods(userUuid, {ispreferred: true});
   if(paymentMethods.rows?.length === 0){
     return res.status(401).json("Payment method not found!").end();

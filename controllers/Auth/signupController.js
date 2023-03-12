@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
 const CryptoJS = require("crypto-js");
 const { v4: uuidv4 } = require("uuid");
-const SignupManager = require("../../model/signupModel");
+const { SignupManager } = require("../../model/signupModel");
+const { UserManager } = require("../../model/user");
+const BusinessAccountsManager = require("../../model/businessAccounts");
 
 const signupController = async (req, res) => {
   const userUuid = uuidv4();
@@ -19,20 +21,30 @@ const signupController = async (req, res) => {
     timeZone,
     securityQuestion,
     securityQuestionAnswer,
+    businessName = null,
   } = req.body;
 
   const encryptedPassword = CryptoJS.MD5(password).toString();
 
-  const dbUsers = await SignupManager.insertUsers(
+  const dbUserByEmail = await UserManager.getUserByEmail(email);
+  if (dbUserByEmail?.email === email)
+    return res.status(400).json("Email already in use").end();
+
+  if (accountType === "business") {
+    const dbBusiness = await BusinessAccountsManager.getBusinessByName(
+      businessName
+    );
+    if (dbBusiness?.businessName === businessName)
+      return res.status(400).json("Business name already in use").end();
+  }
+
+  const dbUser = await SignupManager.insertUser(
     email,
     accountType,
     userUuid,
     encryptedPassword
   );
-  const dbUsersCode = parseInt(dbUsers.code)
-  if (dbUsersCode === 23505)
-    return res.status(400).json("Email already in use").end();
-  if (!dbUsers.rows) {
+  if (!dbUser.rows) {
     return res.status(500).json("Signup failed in data base!").end();
   }
 
@@ -41,47 +53,49 @@ const signupController = async (req, res) => {
   const options = { year: "numeric", month: "long", day: "numeric" };
   const creationTime = today.toLocaleString("en-US", options);
 
-  const dbCustomers = await SignupManager.insertCostumers(
+  const dbCustomer = await SignupManager.insertCustomer(
     userUuid,
     req.body,
     creationTime
   );
-  if (!dbUsers.rows) {
+  if (!dbUser.rows) {
     return res.status(401).json("Signup failed in data base!").end();
   }
 
   let dbPersonalAccount;
-  if (dbUsers?.rows[0].account_type === "personal") {
+  if (dbUser?.rows[0].account_type === "personal") {
     dbPersonalAccount = await SignupManager.insertPersonalAccount(
-      dbCustomers.rows[0].costumer_id
+      dbCustomer.rows[0].customer_id
     );
-    if (!dbUsers.rows) {
+    if (!dbUser.rows) {
       return res.status(500).json("Insert personal account failed");
     }
   }
-  
-  if (dbUsers?.rows[0].account_type === "business") {
+
+  if (dbUser?.rows[0].account_type === "business") {
     dbPersonalAccount = await SignupManager.insertBusinessAccount(
-      dbCustomers.rows[0].costumer_id, req.body
+      dbCustomer.rows[0].customer_id,
+      req.body
     );
-    const dbCode = parseInt(dbPersonalAccount.code)
-    if (dbCode === 23505) return res.status(400).json("Business name already in use");
+    const dbCode = parseInt(dbPersonalAccount.code);
+    if (dbCode === 23505)
+      return res.status(400).json("Business name already in use");
     if (!dbPersonalAccount) {
       return res.status(500).json("Insert business account failed");
     }
   }
 
   const userInfo = {
-    email: dbUsers.rows[0].email,
-    accountType: dbUsers.rows[0].account_type,
-    firstName: dbCustomers.rows[0].first_name,
-    lastName: dbCustomers.rows[0].last_name,
-    phone: dbCustomers.rows[0].phone,
-    birthDate: dbCustomers.rows[0].birth_date,
-    adress: dbCustomers.rows[0].adress,
-    city: dbCustomers.rows[0].city,
-    country: dbCustomers.rows[0].country,
-    timeZone: dbCustomers.rows[0].time_zone,
+    email: dbUser.rows[0].email,
+    accountType: dbUser.rows[0].account_type,
+    firstName: dbCustomer.rows[0].first_name,
+    lastName: dbCustomer.rows[0].last_name,
+    phone: dbCustomer.rows[0].phone,
+    birthDate: dbCustomer.rows[0].birth_date,
+    adress: dbCustomer.rows[0].adress,
+    city: dbCustomer.rows[0].city,
+    country: dbCustomer.rows[0].country,
+    timeZone: dbCustomer.rows[0].time_zone,
     creationTime: creationTime,
     payMethodId: null,
     payMethodUuid: null,

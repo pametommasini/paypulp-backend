@@ -37,7 +37,7 @@ class PaymentMethodManager {
     const pgClient = await newClient();
     if (params?.ispreferred) {
       const prefQueryRes = await pgClient.query(
-        "SELECT payment_methods.pay_method_uuid, payment_methods.card_number, payment_methods.card_name, payment_methods.card_type, payment_methods.is_preferred, payment_methods.card_expiry_date FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_costumers ON personal_accounts.costumer_id = paypulp_costumers.costumer_id WHERE user_uuid = ($1) AND is_preferred = true;",
+        "SELECT payment_methods.pay_method_uuid, payment_methods.card_number, payment_methods.card_name, payment_methods.card_type, payment_methods.is_preferred, payment_methods.card_expiry_date FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_customers ON personal_accounts.customer_id = paypulp_customers.customer_id WHERE user_uuid = ($1) AND is_preferred = true;",
         [userUuid]
       );
       pgClient.end();
@@ -46,7 +46,7 @@ class PaymentMethodManager {
       return preferredPaymentMethod;
     } else {
       const queryRes = await pgClient.query(
-        "SELECT payment_methods.pay_method_uuid, payment_methods.card_number, payment_methods.card_name, payment_methods.card_type, payment_methods.is_preferred, payment_methods.card_expiry_date FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_costumers ON personal_accounts.costumer_id = paypulp_costumers.costumer_id WHERE user_uuid = ($1)",
+        "SELECT payment_methods.pay_method_uuid, payment_methods.card_number, payment_methods.card_name, payment_methods.card_type, payment_methods.is_preferred, payment_methods.card_expiry_date FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_customers ON personal_accounts.customer_id = paypulp_customers.customer_id WHERE user_uuid = ($1)",
         [userUuid]
       );
       pgClient.end();
