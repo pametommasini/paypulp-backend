@@ -124,7 +124,7 @@ class UserDataManager {
 
       customerInfo = {
         ...customerInfo,
-        personalId: dbPersonal.personal_id,
+        personalId: dbPersonal.rows[0].personal_id,
       };
       return customerInfo;
     }
@@ -135,7 +135,7 @@ class UserDataManager {
         [customerInfo.customerId]
       );
       pgClient.end();
-      
+
       const businessAccountInfo = dataToBusinessAccount(dbBusiness.rows[0]);
       customerInfo = {
         ...customerInfo,

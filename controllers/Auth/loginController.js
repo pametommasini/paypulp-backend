@@ -29,7 +29,7 @@ const loginController = async (req, res) => {
   if(!dbUserData){
     return res.status(401).json("User not found!").end();
   }
-
+  console.log(dbUserData)
   const paymentMethods = await PaymentMethodManager.getPaymentMethods(userUuid, {ispreferred: true});
   if(paymentMethods.rows?.length === 0){
     return res.status(401).json("Payment method not found!").end();
