@@ -14,7 +14,7 @@ const loginController = async (req, res) => {
 
   const dbUser = await UserManager.getUserByEmail(email);
   if (!dbUser) {
-    return res.status(401).json("User not found").end();
+    return res.status(401).json("Invalid user or password!").end();
   }
 
   const dbPassword = dbUser.password;

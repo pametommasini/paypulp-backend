@@ -5,7 +5,7 @@ const loginValid = (req, res, next) => {
     validationResult(req).throw()
     return next()
   } catch (err) {
-    res.status(400).send({ errors: 'invalid email or password' })
+    return res.status(401).json('invalid email or password').end()
   }
 }
 
