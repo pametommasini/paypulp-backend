@@ -5,7 +5,7 @@ class Login {
     userId = null,
     userUuid = null,
     accountType = null,
-    costumerId = null,
+    customerId = null,
     firstName = null,
     lastName = null,
     phone = null,
@@ -24,7 +24,7 @@ class Login {
     this.userUuid = userUuid;
     this.email = email;
     this.accountType = accountType;
-    this.costumerId = costumerId;
+    this.customerId = customerId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
@@ -41,25 +41,11 @@ class Login {
 }
 
 class LoginManager {
-  static compareEmail = async (email) => {
-    const pgClient = await newClient();
-    try {
-      const dbClient = await pgClient.query(
-        "SELECT * FROM users WHERE email = ($1)",
-        [email]
-      );
-      pgClient.end();
-      return dbClient;
-    } catch (error) {
-      return error;
-    }
-  };
-
   static getName = async (userUuid) => {
     const pgClient = await newClient();
     try {
       const dbRes = await pgClient.query(
-        "SELECT  payment_methods.*, paypulp_costumers.first_name, personal_accounts.costumer_id FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_costumers ON personal_accounts.costumer_id = paypulp_costumers.costumer_id WHERE user_uuid = ($1);",
+        "SELECT  payment_methods.*, paypulp_customers.first_name, personal_accounts.customer_id FROM payment_methods INNER JOIN personal_accounts ON payment_methods.personal_id = personal_accounts.personal_id INNER JOIN paypulp_customers ON personal_accounts.customer_id = paypulp_customers.customer_id WHERE user_uuid = ($1);",
         [userUuid]
       );
       pgClient.end();

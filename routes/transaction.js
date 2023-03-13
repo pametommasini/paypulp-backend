@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { validateTransaction } = require('../middlewares/validators/TransactionValidator');
+const { validateTransaction } = require('../middlewares/TransactionValidator');
 
 // router.get('/', require("../controllers/Transactions/getAllTransactions"));
 

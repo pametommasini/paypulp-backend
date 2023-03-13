@@ -1,5 +1,5 @@
 const { check } = require('express-validator');
-const { validateResult } = require('./validateHelper');
+const { validateResult } = require('./validators/bodyValid');
 
 const validateTransaction = [
     check("businessId")

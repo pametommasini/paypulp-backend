@@ -6,7 +6,7 @@ class Signup {
     userUuid = null,
     email = null,
     accountType = null,
-    costumerId = null,
+    Id = null,
     firstName = null,
     lastName = null,
     phone = null,
@@ -24,7 +24,7 @@ class Signup {
     this.userUuid = userUuid;
     this.email = email;
     this.accountType = accountType;
-    this.costumerId = costumerId;
+    this.Id = Id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
@@ -43,21 +43,61 @@ class Signup {
 }
 
 class PersonalAccount {
-  constructor(personalId = null, costumerId = null) {
+  constructor(personalId = null, Id = null) {
     this.personalId = personalId;
-    this.costumerId = costumerId;
+    this.Id = Id;
+  }
+}
+
+class BusinessAccount {
+  constructor(
+    businessId = null,
+    customerId = null,
+    businessName = null,
+    businessType = null,
+    businessDescription = null,
+    webPage = null,
+    cif = null,
+    industry = null,
+    bankAccountNumber = null
+  ) {
+    this.businessId = businessId;
+    this.customerId = customerId;
+    this.businessName = businessName;
+    this.businessType = businessType;
+    this.businessDescription = businessDescription;
+    this.webPage = webPage;
+    this.cif = cif;
+    this.industry = industry;
+    this.bankAccountNumber = bankAccountNumber;
   }
 }
 
 const dataToPersonalAccount = (dataFromDb) => {
   const personalAccount = new PersonalAccount(
     (personalId = dataFromDb.personal_id),
-    (costumerId = dataFromDb.costumer_id)
+    (customerId = dataFromDb.customer_id)
   );
   return personalAccount;
 };
+
+const dataToBusinessAccount = (dataFromDb) => {
+  const businessAccount = new BusinessAccount(
+    (customerId = dataFromDb.customer_id),
+    (businessId = dataFromDb.business_id),
+    (businessName = dataFromDb.business_name),
+    (businessType = dataFromDb.business_type),
+    (businessDescription = dataFromDb.business_description),
+    (webPage = dataFromDb.web_page),
+    (cif = dataFromDb.cif),
+    (industry = dataFromDb.industry),
+    (bankAccountNumber = dataFromDb.bank_account_number)
+  );
+  return businessAccount;
+};
+
 class SignupManager {
-  static insertUsers = async (email, accountType, userUuid, md5Password) => {
+  static insertUser = async (email, accountType, userUuid, md5Password) => {
     const pgClient = await newClient();
     try {
       const dbUsers = await pgClient.query(
@@ -71,11 +111,11 @@ class SignupManager {
     }
   };
 
-  static insertCostumers = async (userUuid, body, creationTime) => {
+  static insertCustomer = async (userUuid, body, creationTime) => {
     const pgClient = await newClient();
     try {
       const dbCustomers = await pgClient.query(
-        "INSERT INTO paypulp_costumers (user_uuid, first_name, last_name, phone, birth_date, address, city, country, time_zone, security_question, security_question_answer, creation_time) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12)) RETURNING *",
+        "INSERT INTO paypulp_customers (user_uuid, first_name, last_name, phone, birth_date, address, city, country, time_zone, security_question, security_question_answer, creation_time) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8), ($9), ($10), ($11), ($12)) RETURNING *",
         [
           userUuid,
           body.firstName,
@@ -98,32 +138,43 @@ class SignupManager {
     }
   };
 
-  static insertPersonalAccount = async (costumer_id) => {
+  static insertPersonalAccount = async (_id) => {
     const pgClient = await newClient();
     try {
       const dbPersonalAccounts = await pgClient.query(
-        "INSERT INTO personal_accounts (costumer_id) VALUES (($1)) RETURNING *",
-        [costumer_id]
+        "INSERT INTO personal_accounts (customer_id) VALUES (($1)) RETURNING *",
+        [_id]
       );
       pgClient.end();
-      const newPersonalAccount = dataToPersonalAccount(dbPersonalAccounts.rows[0]);
+      const newPersonalAccount = dataToPersonalAccount(
+        dbPersonalAccounts.rows[0]
+      );
       return newPersonalAccount;
     } catch (error) {
       console.log(error);
       return error;
     }
   };
-  
-  static insertBusinessAccount = async (costumerId) => {
+
+  static insertBusinessAccount = async (Id, body) => {
     const pgClient = await newClient();
     try {
-      const dbBusinessAccounts = await pgClient.query(
-        "INSERT INTO personal_accounts (costumer_id) VALUES (($1)) RETURNING *",
-        [costumerId]
+      const dbBusinessAccount = await pgClient.query(
+        "INSERT INTO business_accounts (customer_id, business_name, business_type, business_description, web_page, cif, industry, bank_account_number) VALUES (($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8)) RETURNING *",
+        [
+          Id,
+          body.businessName,
+          body.businessType,
+          body.businessDescription,
+          body.webPageURL,
+          body.cif,
+          body.industry,
+          body.bankAccountNumber,
+        ]
       );
       pgClient.end();
-      const newPersonalAccount = dataToPersonalAccount(dbBusinessAccounts.rows[0]);
-      return newPersonalAccount;
+      const businessAccount = dataToBusinessAccount(dbBusinessAccount.rows[0]);
+      return businessAccount;
     } catch (error) {
       console.log(error);
       return error;
@@ -131,4 +182,4 @@ class SignupManager {
   };
 }
 
-module.exports = SignupManager;
+module.exports = { SignupManager, dataToBusinessAccount };
