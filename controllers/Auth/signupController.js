@@ -11,16 +11,6 @@ const signupController = async (req, res) => {
     email,
     password,
     accountType,
-    firstName,
-    lastName,
-    phone,
-    birthDate,
-    address,
-    city,
-    country,
-    timeZone,
-    securityQuestion,
-    securityQuestionAnswer,
     businessName = null,
   } = req.body;
 

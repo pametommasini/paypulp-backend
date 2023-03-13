@@ -1,22 +1,18 @@
-const { check } = require('express-validator');
-const { validateResult } = require('./validateHelper');
+const { body } = require('express-validator')
 
 const validateLogin = [
-    check("email")
+  body('email')
     .exists()
     .withMessage("Email param doesn't exist!")
     .isEmail()
-    .withMessage("Incorrect email format!")
+    .withMessage('Incorrect email format!')
     .notEmpty()
-    .withMessage("Email param is empty!"),
-    check("password")
+    .withMessage('Email param is empty!'),
+  body('password')
     .exists()
     .withMessage("Password param doesn't exist!")
     .notEmpty()
-    .withMessage("Password param is empty!"),
-    (req, res, next) => {
-        validateResult(req, res, next)
-    }
+    .withMessage('Password param is empty!'),
 ]
 
-module.exports = { validateLogin };
+module.exports = { validateLogin }
