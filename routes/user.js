@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { validatePayment } = require('../middlewares/validators/paymentValidator');
+const { validatePayment } = require('../middlewares/paymentValidator');
 
 // User data
 router.get('/userdata', require('../controllers/Users/getCustomerData'));
