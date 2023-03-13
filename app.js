@@ -4,10 +4,11 @@ const path = require('path')
 const logger = require('morgan')
 const cors = require('cors')
 require('dotenv').config({ path: './.env' })
-const validateToken = require('./middlewares/validateToken')
-const { validateResult } = require('./middlewares/validators/validateHelper')
-const { validateSignup } = require('./middlewares/validators/signupValidator')
-const { validateLogin } = require('./middlewares/validators/loginValidator')
+const validateToken = require('./middlewares/validators/tokenValid')
+const { validateResult } = require('./middlewares/validators/bodyValid')
+const { signupValidFields } = require('./middlewares/validationFields/signup')
+const { loginValidFields } = require('./middlewares/validationFields/login')
+const { loginValid } = require('./middlewares/validators/loginValid')
 const app = express()
 
 // middlewares
@@ -19,8 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/private', validateToken, require('./routes'))
 
 // public routes
-app.post('/login', validateLogin, validateResult, require('./controllers/Auth/loginController'))
-app.post('/signup', validateSignup, validateResult, require('./controllers/Auth/signupController'))
+app.post('/login', loginValidFields, loginValid, require('./controllers/Auth/loginController'))
+app.post('/signup', signupValidFields, validateResult, require('./controllers/Auth/signupController'))
 
 /* // catch 404 and forward to error handler
 app.use(function (req, res, next) {

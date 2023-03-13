@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { validateProduct } = require('../middlewares/validators/productValidator');
+const { validateProduct } = require('../middlewares/productValidator');
 
 router.get('/', require("../controllers/Products/getAllProducts"));
 
