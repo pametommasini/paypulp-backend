@@ -75,6 +75,25 @@ class PersonalInfoManager {
       client.end()
     }
   }
+
+  static getPersonalInfoByUuid = async (userUuid) => {
+    const client = await dbConnect()
+
+    try {
+      const dbRes = await client.query('SELECT * FROM personal_info WHERE user_uuid = ($1)', [userUuid])
+
+      if (dbRes.rows.length === 0) return
+
+      const user = castUser(dbRes.rows[0])
+
+      return user
+    } catch (err) {
+      console.error('Error executing query:', err)
+      throw new Error('Error retrieving users from database')
+    } finally {
+      client.end()
+    }
+  }
 }
 
 module.exports = { PersonalInfoManager }
