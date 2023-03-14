@@ -96,8 +96,19 @@ const city = () => {
     .withMessage("City param doesn't exist!")
     .notEmpty()
     .withMessage('City param is empty!')
-    .isAlphanumeric(locale, { ignore: ' ' })
-    .withMessage('Address only accept alphabetic characters and numbers')
+    .isAlpha(locale, { ignore: ' ' })
+    .withMessage('City only accept alphabetic characters')
+    .trim()
+}
+
+const country = () => {
+  return body('country')
+    .exists()
+    .withMessage("Country param doesn't exist!")
+    .notEmpty()
+    .withMessage('Country param is empty!')
+    .isAlpha(locale, { ignore: ' ' })
+    .withMessage('Country only accept alphabetic characters')
     .trim()
 }
 
@@ -142,6 +153,7 @@ module.exports = {
   birthDate,
   address,
   city,
+  country,
   timeZone,
   securityQuestion,
   securityQuestionAnswer,

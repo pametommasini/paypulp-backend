@@ -25,7 +25,7 @@ const castUser = (user) => {
 }
 
 class UserManager {
-  static insertNewUser = async (userUuid, email, encryptedPassword, firstName) => {
+  static insertNewUser = async ({ userUuid, email, encryptedPassword, firstName }) => {
     const client = await dbConnect()
 
     try {
@@ -40,7 +40,6 @@ class UserManager {
     } catch (err) {
       console.error('Error executing query:', err)
       throw new Error('Error inserting user in database')
-
     } finally {
       client.end()
     }
@@ -85,10 +84,25 @@ class UserManager {
   }
 
   // static deleteUser = async (userUuid) => {
-  //   const client = await newClient()
-  //   const queryRes = await client.query('DELETE FROM users WHERE user_uuid = ($1)', [userUuid])
-  //   client.end()
-  //   return queryRes.rows
+  //   const client = await dbConnect()
+
+  //   const query = `DELETE FROM users 
+  //     WHERE user_uuid = ($1)`
+
+  //   try {
+  //     const dbRes = await client.query(query, [userUuid])
+
+  //     if (dbRes.rows.length === 0) return
+
+  //     const user = castUser(dbRes.rows[0])
+
+  //     return user
+  //   } catch (err) {
+  //     console.error('Error executing query:', err)
+  //     throw new Error('Error retrieving users from database')
+  //   } finally {
+  //     client.end()
+  //   }
   // }
 }
 
