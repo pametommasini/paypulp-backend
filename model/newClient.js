@@ -7,7 +7,7 @@ require("dotenv").config();
  * 2- create a new connection using "new Client()" from pg library
  * 3- start the connection with the ".connect()" method from the new client
  */
-getClient = async () => {
+const dbConnect = async () => {
   const connectionData = {
     host: process.env.PG_HOST,
     port: process.env.PG_PORT,
@@ -20,4 +20,4 @@ getClient = async () => {
   return newClient;
 };
 
-module.exports = getClient;
+module.exports = dbConnect;

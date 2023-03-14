@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const CryptoJS = require("crypto-js");
 const UserDataManager = require("../../model/userData");
 const PaymentMethodManager = require("../../model/paymentMethod");
-const { UserManager } = require("../../model/user");
+const { UserManager } = require("../../model/userModel");
 
 const encryptPassword = (password) => {
   return CryptoJS.MD5(password).toString();
