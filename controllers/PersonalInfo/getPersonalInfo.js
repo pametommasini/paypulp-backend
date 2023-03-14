@@ -1,10 +1,10 @@
-const { PersonalInfoManager } = require('../../model/personalInfoModel')
+const { PersonalInfo } = require('../../model/personalInfoModel')
 
 const getPersonalInfo = async (req, res) => {
   const userUuid = req.userUuid
 
   try {
-    const dbRes = await PersonalInfoManager.selectBy('personalInfo', 'userUuid', userUuid)
+    const dbRes = await PersonalInfo.selectBy('personalInfo', 'userUuid', userUuid)
 
     if (!dbRes) {
       return res.status(400).json({

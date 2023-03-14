@@ -3,8 +3,31 @@ const minify = require('pg-minify')
 const camelize = require('camelize')
 const { snakizeString } = require('../helpers/casing')
 
+class PersonalInfo {
+  constructor({
+    personalInfoId = null,
+    userUuid = null,
+    lastName = null,
+    phone = null,
+    birthDate = null,
+    address = null,
+    city = null,
+    country = null,
+    timeZone = null,
+    creationTime = null,
+  }) {
+    this.personalInfoId = personalInfoId
+    this.userUuid = userUuid
+    this.lastName = lastName
+    this.phone = phone
+    this.birthDate = birthDate
+    this.address = address
+    this.city = city
+    this.country = country
+    this.timeZone = timeZone
+    this.creationTime = creationTime
+  }
 
-class PersonalInfoManager {
   static insertPersonalInfo = async ({
     userUuid,
     lastName,
@@ -79,30 +102,4 @@ class PersonalInfoManager {
   }
 }
 
-class PersonalInfo {
-  constructor({
-    personalInfoId = null,
-    userUuid = null,
-    lastName = null,
-    phone = null,
-    birthDate = null,
-    address = null,
-    city = null,
-    country = null,
-    timeZone = null,
-    creationTime = null,
-  }) {
-    this.personalInfoId = personalInfoId
-    this.userUuid = userUuid
-    this.lastName = lastName
-    this.phone = phone
-    this.birthDate = birthDate
-    this.address = address
-    this.city = city
-    this.country = country
-    this.timeZone = timeZone
-    this.creationTime = creationTime
-  }
-}
-
-module.exports = { PersonalInfoManager }
+module.exports = { PersonalInfo }
