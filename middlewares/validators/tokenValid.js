@@ -8,7 +8,7 @@ const validateToken = (req, res, next) => {
     req.userUuid = userVerified.userUuid;
     next();
   } catch (error) {
-    res.status(400).json({ error: "invalid token" });
+    res.status(401).json({ error: "invalid token" });
   }
 };
 
