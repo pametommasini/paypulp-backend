@@ -1,37 +1,8 @@
 const dbConnect = require('./newClient')
 const minify = require('pg-minify')
 const camelize = require('camelize')
+const { snakizeString } = require('../helpers/casing')
 
-class PersonalInfo {
-  constructor({
-    personalInfoId = null,
-    userUuid = null,
-    lastName = null,
-    phone = null,
-    birthDate = null,
-    address = null,
-    city = null,
-    country = null,
-    timeZone = null,
-    creationTime = null,
-  }) {
-    this.personalInfoId = personalInfoId
-    this.userUuid = userUuid
-    this.lastName = lastName
-    this.phone = phone
-    this.birthDate = birthDate
-    this.address = address
-    this.city = city
-    this.country = country
-    this.timeZone = timeZone
-    this.creationTime = creationTime
-  }
-}
-
-const castPersonalInfo = (personalInfo) => {
-  personalInfo = camelize(personalInfo)
-  return new PersonalInfo(personalInfo)
-}
 
 class PersonalInfoManager {
   static insertPersonalInfo = async ({
@@ -76,23 +47,61 @@ class PersonalInfoManager {
     }
   }
 
-  static getPersonalInfoByUuid = async (userUuid) => {
+  static selectBy = async (table, column, value) => {
     const client = await dbConnect()
-
+  
+    const tbl = snakizeString(table)
+    const col = snakizeString(column)
+    const val = snakizeString(value)
+  
+    const query = `SELECT * FROM ${tbl}
+        WHERE ${col} = ($1)`
+  
     try {
-      const dbRes = await client.query('SELECT * FROM personal_info WHERE user_uuid = ($1)', [userUuid])
+      const { rows } = await client.query(minify(query), [val])
+  
+      if (rows.length === 0) return
+  
+      const persInfo = this.castData(rows[0])
 
-      if (dbRes.rows.length === 0) return
-
-      const user = castUser(dbRes.rows[0])
-
-      return user
+      return persInfo
     } catch (err) {
       console.error('Error executing query:', err)
       throw new Error('Error retrieving users from database')
     } finally {
       client.end()
     }
+  }
+
+  static castData = (data) => {
+    data = camelize(data)
+    return new PersonalInfo(data)
+  }
+}
+
+class PersonalInfo {
+  constructor({
+    personalInfoId = null,
+    userUuid = null,
+    lastName = null,
+    phone = null,
+    birthDate = null,
+    address = null,
+    city = null,
+    country = null,
+    timeZone = null,
+    creationTime = null,
+  }) {
+    this.personalInfoId = personalInfoId
+    this.userUuid = userUuid
+    this.lastName = lastName
+    this.phone = phone
+    this.birthDate = birthDate
+    this.address = address
+    this.city = city
+    this.country = country
+    this.timeZone = timeZone
+    this.creationTime = creationTime
   }
 }
 
