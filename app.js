@@ -19,7 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/private', /* validateToken, */ require('./routes'))
 
 // public routes
-app.post('/login', /* loginValidFields, loginValid, */ require('./controllers/Auth/loginController'))
+app.post('/login', loginValidFields, loginValid, require('./controllers/Auth/loginController'))
 app.post('/signup', signupValidFields, validateResult, require('./controllers/Auth/signupController'))
 
 module.exports = app
