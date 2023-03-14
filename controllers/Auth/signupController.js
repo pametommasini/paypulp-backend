@@ -36,7 +36,7 @@ const signupController = async (req, res) => {
   }
 
   try {
-    await PersonalInfo.insertPersonalInfo(newPersonalInfo)
+    await PersonalInfo.insertData('personalInfo', newPersonalInfo)
   } catch (error) {
 
     return res.status(400).json(error.toString())
