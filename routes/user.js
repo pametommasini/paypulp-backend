@@ -16,14 +16,7 @@ const dbConnect = require('../model/newClient')
 // router.delete('/:userUuid/paymentmethods', require('../controllers/Payments/deletePayment'));
 
 // get single user by Uuid - TEST
-router.get('/', async (req, res) => {
-  const client = await dbConnect()
-
-  const dbRes = await client.query('SELECT * FROM users')
-  client.end()
-
-  return res.status(200).json(dbRes.rows[0])
-})
+router.get('/', require('../controllers/User/getUser'))
 
 module.exports = router
 

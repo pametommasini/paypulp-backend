@@ -1,4 +1,5 @@
 const camelize = require('camelize')
+const minify = require('pg-minify')
 const dbConnect = require('./newClient')
 
 class User {
@@ -48,8 +49,11 @@ class UserManager {
   static getUserByUuid = async (userUuid) => {
     const client = await dbConnect()
 
+    const query = `SELECT * FROM users 
+      WHERE user_uuid = ($1)`
+
     try {
-      const dbRes = await client.query('SELECT * FROM users WHERE userUuid = ($1)', [userUuid])
+      const dbRes = await client.query(minify(query), [userUuid])
 
       if (dbRes.rows.length === 0) return
 
