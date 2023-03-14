@@ -2,7 +2,7 @@ const CryptoJS = require('crypto-js')
 const { v4: uuidv4 } = require('uuid')
 const { UserManager } = require('../../model/userModel')
 const DatesHelp = require('../../helpers/datesHelp')
-const { PersonalInfoManager } = require('../../model/personalInfoModel')
+const { PersonalInfo } = require('../../model/personalInfoModel')
 
 const signupController = async (req, res) => {
   const userUuid = uuidv4()
@@ -36,7 +36,7 @@ const signupController = async (req, res) => {
   }
 
   try {
-    await PersonalInfoManager.insertPersonalInfo(newPersonalInfo)
+    await PersonalInfo.insertPersonalInfo(newPersonalInfo)
   } catch (error) {
 
     return res.status(400).json(error.toString())

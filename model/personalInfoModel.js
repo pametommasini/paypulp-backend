@@ -3,7 +3,35 @@ const minify = require('pg-minify')
 const camelize = require('camelize')
 const { snakizeString } = require('../helpers/casing')
 
-class PersonalInfo {
+class Model {
+  static async selectBy(table, column, value) {
+    const client = await dbConnect()
+    const tbl = snakizeString(table)
+    const col = snakizeString(column)
+    const val = snakizeString(value)
+
+    const query = `SELECT * FROM ${tbl}
+        WHERE ${col} = ($1)`
+
+    try {
+      const { rows } = await client.query(minify(query), [val])
+
+      if (rows.length === 0) return
+
+      const data = camelize(rows[0])
+      const instance = new constructor(data)
+
+      return Object.assign({}, instance)
+    } catch (err) {
+      console.error('Error executing query:', err)
+      throw new Error('Error retrieving users from database')
+    } finally {
+      client.end()
+    }
+  }
+}
+
+class PersonalInfo extends Model {
   constructor({
     personalInfoId = null,
     userUuid = null,
@@ -16,6 +44,7 @@ class PersonalInfo {
     timeZone = null,
     creationTime = null,
   }) {
+    super()
     this.personalInfoId = personalInfoId
     this.userUuid = userUuid
     this.lastName = lastName
@@ -47,7 +76,7 @@ class PersonalInfo {
       RETURNING *`
 
     try {
-      const dbRes = await client.query(minify(query), [
+      const { rows } = await client.query(minify(query), [
         userUuid,
         lastName,
         phone,
@@ -59,46 +88,16 @@ class PersonalInfo {
         creationTime,
       ])
 
-      const personalInfo = castPersonalInfo(dbRes.rows[0])
+      const data = camelize(rows[0])
+      const instance = new constructor(data)
 
-      return personalInfo
+      return instance
     } catch (err) {
       console.error('Error executing query:', err)
       throw new Error('Error inserting personal info in database')
     } finally {
       client.end()
     }
-  }
-
-  static selectBy = async (table, column, value) => {
-    const client = await dbConnect()
-  
-    const tbl = snakizeString(table)
-    const col = snakizeString(column)
-    const val = snakizeString(value)
-  
-    const query = `SELECT * FROM ${tbl}
-        WHERE ${col} = ($1)`
-  
-    try {
-      const { rows } = await client.query(minify(query), [val])
-  
-      if (rows.length === 0) return
-  
-      const persInfo = this.castData(rows[0])
-
-      return persInfo
-    } catch (err) {
-      console.error('Error executing query:', err)
-      throw new Error('Error retrieving users from database')
-    } finally {
-      client.end()
-    }
-  }
-
-  static castData = (data) => {
-    data = camelize(data)
-    return new PersonalInfo(data)
   }
 }
 
