@@ -63,8 +63,8 @@ class QueryModel {
 
       return instance
     } catch (err) {
-      // console.error('Error executing query:', err)
-      throw new Error('Error inserting personal info in database')
+      console.error('Error executing query:', err)
+      throw err
     } finally {
       client.end()
     }
@@ -81,7 +81,7 @@ class QueryModel {
         res += ', '
       }
     }
-    console.log(res)
+
     return res
   }
 

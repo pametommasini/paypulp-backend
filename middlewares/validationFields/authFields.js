@@ -35,7 +35,7 @@ const accountType = () => {
     .notEmpty()
     .withMessage('Account type param is empty!')
     .isAlpha()
-    .withMessage('Account type only admits alphabetic characters')
+    .withMessage('Account type only admits letters')
 }
 
 const firstName = () => {
@@ -45,7 +45,7 @@ const firstName = () => {
     .notEmpty()
     .withMessage('First name param is empty!')
     .isAlpha(locale, { ignore: ' ' })
-    .withMessage('First name only admits alphabetic characters')
+    .withMessage('First name only admits letters')
     .trim()
 }
 
@@ -56,7 +56,7 @@ const lastName = () => {
     .notEmpty()
     .withMessage('Last name param is empty!')
     .isAlpha(locale, { ignore: ' ' })
-    .withMessage('Last name only admits alphabetic characters')
+    .withMessage('Last name only admits letters')
     .trim()
 }
 
@@ -87,6 +87,8 @@ const address = () => {
     .withMessage("Address param doesn't exist!")
     .notEmpty()
     .withMessage('Address param is empty!')
+    .isAlphanumeric(locale, { ignore: ' ' })
+    .withMessage('Address only admits letters and numbers')
     .trim()
 }
 
@@ -97,7 +99,7 @@ const city = () => {
     .notEmpty()
     .withMessage('City param is empty!')
     .isAlpha(locale, { ignore: ' ' })
-    .withMessage('City only accept alphabetic characters')
+    .withMessage('City only accept letters')
     .trim()
 }
 
@@ -108,7 +110,7 @@ const country = () => {
     .notEmpty()
     .withMessage('Country param is empty!')
     .isAlpha(locale, { ignore: ' ' })
-    .withMessage('Country only accept alphabetic characters')
+    .withMessage('Country only accept letters')
     .trim()
 }
 
@@ -129,7 +131,7 @@ const securityQuestion = () => {
     .notEmpty()
     .withMessage('Security question param is empty!')
     .isAlpha(locale, { ignore: '? ' })
-    .withMessage('Security question only admits alphabetic characters')
+    .withMessage('Security question only admits letters')
     .trim()
 }
 
@@ -140,7 +142,7 @@ const securityQuestionAnswer = () => {
     .notEmpty()
     .withMessage('Security question answer param is empty!')
     .isAlpha(locale, { ignore: '? ' })
-    .withMessage('Security question answer only admits alphabetic characters')
+    .withMessage('Security question answer only admits letters')
 }
 
 module.exports = {
