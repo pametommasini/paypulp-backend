@@ -26,9 +26,11 @@ class QueryModel {
 
       if (rows.length === 0) return
 
+      // -this is wrong-
       const instance = this.castData(rows[0])
 
       return Object.assign({}, instance)
+      // ---------------
     } catch (err) {
       // console.error('Error executing query:', err)
       throw new Error('Error retrieving users from database')
@@ -40,15 +42,15 @@ class QueryModel {
   /**
    * Insert multiple
    * @param {string} table - destination table
-   * @param {object} newDataObject - columns and values to be inserted
+   * @param {object} newData - columns and values to be inserted
    * @returns {dbData}
    */
-  static async insertData(table, newDataObject) {
+  static async insertData(table, newData) {
     const client = await dbConnect()
 
     const tbl = snakizeString(table)
-    const keys = Object.keys(snakeize(newDataObject)).toString()
-    const values = Object.values(newDataObject)
+    const keys = Object.keys(snakeize(newData)).toString()
+    const values = Object.values(newData)
 
     const positions = this.parameterPositions(values)
 
@@ -59,9 +61,39 @@ class QueryModel {
     try {
       const { rows } = await client.query(minify(query), values)
 
-      const instance = this.castData(rows[0])
+      // const instance = this.castData(rows[0])
 
-      return instance
+      return rows[0]
+    } catch (err) {
+      console.error('Error executing query:', err)
+      throw err
+    } finally {
+      client.end()
+    }
+  }
+
+  static async updateData(table, newData, condition) {
+    const client = await dbConnect()
+
+    const tbl = snakizeString(table)
+    const keys = Object.keys(snakeize(newData))
+    const values = Object.values(newData)
+    const conditSnake = snakeize(condition)
+    const conditCol = Object.keys(conditSnake)
+
+    const columnsAndValues = this.columnsAndValues(keys)
+
+    const query = `UPDATE ${tbl} 
+      SET ${columnsAndValues}
+      WHERE ${conditCol} = '${conditSnake[conditCol]}'
+      RETURNING *`
+
+    try {
+      const { rows } = await client.query(minify(query), values)
+
+      // const instance = this.castData(rows[0])
+
+      return rows[0]
     } catch (err) {
       console.error('Error executing query:', err)
       throw err
@@ -71,18 +103,34 @@ class QueryModel {
   }
 
   static parameterPositions(arr) {
-    let res = ''
+    let finalString = ''
 
     for (let i = 1; i <= arr.length; i++) {
       let temp = `($${i})`
-      res += temp
+      finalString += temp
 
       if (i !== arr.length) {
-        res += ', '
+        finalString += ', '
       }
     }
 
-    return res
+    return finalString
+  }
+
+  static columnsAndValues(arr) {
+    let finalString = ''
+
+    for (let i = 1; i <= arr.length; i++) {
+
+      let temp = `($${i})`
+      finalString += arr[i-1] + ' = ' + temp
+
+      if (i !== arr.length) {
+        finalString += ', '
+      }
+    }
+
+    return finalString
   }
 
   static castData(data) {
