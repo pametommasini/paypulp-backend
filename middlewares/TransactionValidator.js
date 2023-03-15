@@ -37,9 +37,6 @@ const validateTransaction = [
     .withMessage("Went through param doesn't exist")
     .notEmpty()
     .withMessage("Went through param is empty"),
-    (req, res, next) => {
-        validateResult(req, res, next)
-    }
 ];
 
 module.exports = { validateTransaction };

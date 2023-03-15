@@ -37,9 +37,6 @@ const validatePayment = [
     .withMessage("Card security code param doesn't exist")
     .notEmpty()
     .withMessage("Card security code param is empty"),
-    (req, res, next) => {
-        validateResult(req, res, next)
-    }
 ];
 
 module.exports = { validatePayment };
