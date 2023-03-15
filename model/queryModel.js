@@ -17,13 +17,12 @@ class QueryModel {
 
     const tbl = snakizeString(table)
     const col = snakizeString(column)
-    const val = snakizeString(value)
 
     const query = `SELECT * FROM ${tbl}
         WHERE ${col} = ($1)`
 
     try {
-      const { rows } = await client.query(minify(query), [val])
+      const { rows } = await client.query(minify(query), [value])
 
       if (rows.length === 0) return
 
@@ -31,7 +30,7 @@ class QueryModel {
 
       return Object.assign({}, instance)
     } catch (err) {
-      console.error('Error executing query:', err)
+      // console.error('Error executing query:', err)
       throw new Error('Error retrieving users from database')
     } finally {
       client.end()
@@ -64,7 +63,7 @@ class QueryModel {
 
       return instance
     } catch (err) {
-      console.error('Error executing query:', err)
+      // console.error('Error executing query:', err)
       throw new Error('Error inserting personal info in database')
     } finally {
       client.end()
