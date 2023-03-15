@@ -124,27 +124,6 @@ const timeZone = () => {
     .withMessage('Time zone must be a number')
 }
 
-const securityQuestion = () => {
-  return body('securityQuestion')
-    .exists()
-    .withMessage("Security question param doesn't exist!")
-    .notEmpty()
-    .withMessage('Security question param is empty!')
-    .isAlpha(locale, { ignore: '? ' })
-    .withMessage('Security question only admits letters')
-    .trim()
-}
-
-const securityQuestionAnswer = () => {
-  return body('securityQuestionAnswer')
-    .exists()
-    .withMessage("Security question answer param doesn't exist!")
-    .notEmpty()
-    .withMessage('Security question answer param is empty!')
-    .isAlpha(locale, { ignore: '? ' })
-    .withMessage('Security question answer only admits letters')
-}
-
 module.exports = {
   email,
   password,
@@ -157,6 +136,4 @@ module.exports = {
   city,
   country,
   timeZone,
-  securityQuestion,
-  securityQuestionAnswer,
 }
