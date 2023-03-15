@@ -20,8 +20,7 @@ class Model {
 
       if (rows.length === 0) return
 
-      const data = camelize(rows[0])
-      const instance = new constructor(data)
+      const instance = this.castData(rows[0])
 
       return Object.assign({}, instance)
     } catch (err) {
@@ -46,8 +45,7 @@ class Model {
     try {
       const { rows } = await client.query(minify(query), values)
 
-      const data = camelize(rows[0])
-      const instance = new constructor(data)
+      const instance = this.castData(rows[0])
 
       return instance
     } catch (err) {
@@ -56,6 +54,11 @@ class Model {
     } finally {
       client.end()
     }
+  }
+
+  static castData(data) {
+    const dt = camelize(data)
+    return new constructor(dt)
   }
 }
 
