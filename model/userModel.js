@@ -1,6 +1,7 @@
 const camelize = require('camelize')
 const minify = require('pg-minify')
 const dbConnect = require('./newClient')
+const QueryModel = require('./queryModel')
 
 class User {
   constructor({
@@ -25,7 +26,7 @@ const castUser = (user) => {
   return new User(user)
 }
 
-class UserManager {
+class UserManager extends QueryModel {
   static insertNewUser = async ({ userUuid, email, encryptedPassword, firstName }) => {
     const client = await dbConnect()
 
