@@ -35,7 +35,7 @@ CREATE TABLE "seller_info" (
 	"seller_name" varchar(50) NOT NULL UNIQUE,
 	"category" varchar(30) NOT NULL,
 	"store_address" varchar(50),
-	"store_address_add_info" varchar(50) NOT NULL,
+	"store_address_add_info" varchar(50),
 	CONSTRAINT "seller_info_pk" PRIMARY KEY ("seller_info_id")
 );
 
