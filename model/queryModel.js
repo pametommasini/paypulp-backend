@@ -61,9 +61,9 @@ class QueryModel {
     try {
       const { rows } = await client.query(minify(query), values)
 
-      // const instance = this.castData(rows[0])
+      const instance = this.castData(rows[0])
 
-      return rows[0]
+      return instance
     } catch (err) {
       console.error('Error executing query:', err)
       throw err
@@ -71,7 +71,13 @@ class QueryModel {
       client.end()
     }
   }
-
+  /**
+   * Update multiple fields in a single row
+   * @param {string} table - UPDATE
+   * @param {obj} newData - SET
+   * @param {obj} condition - WHERE
+   * @returns {obj} updated row
+   */
   static async updateData(table, newData, condition) {
     const client = await dbConnect()
 
@@ -91,9 +97,9 @@ class QueryModel {
     try {
       const { rows } = await client.query(minify(query), values)
 
-      // const instance = this.castData(rows[0])
+      const instance = this.castData(rows[0])
 
-      return rows[0]
+      return instance
     } catch (err) {
       console.error('Error executing query:', err)
       throw err
