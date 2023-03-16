@@ -6,7 +6,7 @@ const getUser = async (req, res) => {
   try {
     const dbQrLink = await QrLink.selectBy('qrLinks', 'linkSlug', linkSlug)
 
-    if (!dbQrLink) return res.status(400).json({ error: 'No link found' })
+    if (!dbQrLink) return res.status(404).json({ error: 'Not found' })
 
     return res.status(200).json(dbQrLink)
   } catch (error) {

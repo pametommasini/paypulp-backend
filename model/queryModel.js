@@ -27,10 +27,13 @@ class QueryModel {
       if (rows.length === 0) return
 
       // -this is wrong-
-      const instance = this.castData(rows[0])
+      // const instance = this.castData(rows)
 
-      return Object.assign({}, instance)
+      // return Object.assign({}, instance)
       // ---------------
+
+      const dbData = camelize(rows)
+      return dbData
     } catch (err) {
       // console.error('Error executing query:', err)
       throw new Error('Error retrieving users from database')
@@ -60,7 +63,7 @@ class QueryModel {
 
     try {
       const { rows } = await client.query(minify(query), values)
-      const dbData = camelize(rows[0])
+      const dbData = camelize(rows)
 
       return dbData
     } catch (err) {
@@ -96,9 +99,9 @@ class QueryModel {
     try {
       const { rows } = await client.query(minify(query), values)
 
-      const instance = this.castData(rows[0])
+      const dbData = camelize(rows)
 
-      return instance
+      return dbData
     } catch (err) {
       console.error('Error executing query:', err)
       throw err
@@ -126,9 +129,8 @@ class QueryModel {
     let finalString = ''
 
     for (let i = 1; i <= arr.length; i++) {
-
       let temp = `($${i})`
-      finalString += arr[i-1] + ' = ' + temp
+      finalString += arr[i - 1] + ' = ' + temp
 
       if (i !== arr.length) {
         finalString += ', '
