@@ -60,10 +60,9 @@ class QueryModel {
 
     try {
       const { rows } = await client.query(minify(query), values)
+      const dbData = camelize(rows[0])
 
-      const instance = this.castData(rows[0])
-
-      return instance
+      return dbData
     } catch (err) {
       console.error('Error executing query:', err)
       throw err

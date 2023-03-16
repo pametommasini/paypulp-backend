@@ -6,11 +6,7 @@ const getUser = async (req, res) => {
   try {
     const dbRes = await UserManager.getUserByUuid(userUuid)
 
-    if (!dbRes) {
-      return res.status(400).json({
-        error: 'No user found',
-      })
-    }
+    if (!dbRes) return res.status(400).json({ error: 'No user found' })
 
     return res.status(200).json(dbRes)
   } catch (error) {
