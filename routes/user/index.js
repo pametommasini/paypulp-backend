@@ -1,5 +1,5 @@
 const express = require('express')
-const { persInfoSchema } = require('../../middlewares/validationFields/updatePersonalInfoFields')
+const { persInfoSchema } = require('../../middlewares/validationFields/personalInfoSchema')
 const { validateResult } = require('../../middlewares/validators/bodyValid')
 const router = express.Router()
 
@@ -17,5 +17,7 @@ router.patch(
   router.post('/sellerinfo', require('../../controllers/SellerInfo/newSellerInfoController'))
   
   router.use('/paymethods', require('./paymethods'))
+
+  router.use('/qrlink', require('./qrlink'))
   
 module.exports = router
