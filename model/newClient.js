@@ -9,11 +9,13 @@ require("dotenv").config();
  */
 const dbConnect = async () => {
   const connectionData = {
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT,
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
     database: process.env.PG_DATABASE_V2,
+    database: process.env.PG_DATABASE_V2-1,
+    host: process.env.PG_HOST,
+    host: process.env.PG_HOST-1,
+    port: process.env.PG_PORT,
   };
   const newClient = new Client(connectionData);
   newClient.connect();
