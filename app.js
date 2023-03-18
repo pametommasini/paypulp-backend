@@ -8,6 +8,7 @@ const { validateResult } = require('./middlewares/validators/bodyValid')
 const { signupValidFields } = require('./middlewares/validationFields/signup')
 const { loginValidFields } = require('./middlewares/validationFields/login')
 const { loginValid } = require('./middlewares/validators/loginValid')
+const { signupSchema } = require('./middlewares/validationFields/signupSchema')
 const app = express()
 
 // middlewares
@@ -20,6 +21,6 @@ app.use('/private', validateToken, require('./routes'))
 
 // public routes
 app.post('/login', loginValidFields, loginValid, require('./controllers/Auth/loginController'))
-app.post('/signup', signupValidFields, validateResult, require('./controllers/Auth/signupController'))
+app.post('/signup', signupSchema, validateResult, require('./controllers/Auth/signupController'))
 
 module.exports = app

@@ -25,9 +25,9 @@ const newSellerInfo = async (req, res) => {
 
     return res.status(200).json({dbRes, accountType})
   } catch (error) {
-    // console.log(error)
     if (error.code === '23505')
       return res.status(400).json({ error: 'This user already has seller info stored' })
+
     const message = 'An error occurred while processing your request'
     return res.status(500).json({ error: message })
   }
