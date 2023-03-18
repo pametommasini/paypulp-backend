@@ -15,5 +15,5 @@ RUN npm install
 # Bundle app source
 ADD . .
 
-EXPOSE 8080
-CMD node ./bin/www
+EXPOSE 8585
+CMD npm start
