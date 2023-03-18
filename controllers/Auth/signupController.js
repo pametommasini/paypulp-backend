@@ -21,26 +21,32 @@ const signupController = async (req, res) => {
     return res.status(400).json(error.toString())
   }
 
-  const creationTime = DatesHelp.getNow()
-
+  
   const newPersonalInfo = {
     userUuid,
     lastName: req.body.lastName,
     phone: req.body.phone,
-    birthDate: req.body.birthDate,
+    age: req.body.age,
+    gender: req.body.gender,
+    identityDocNumber: req.body.identityDocNumber,
     address: req.body.address,
     city: req.body.city,
+    state: req.body.state,
     country: req.body.country,
+    birthDate: req.body.birthDate,
     timeZone: req.body.timeZone,
-    creationTime,
   }
-
+  
   try {
     await PersonalInfo.insertData('personalInfo', newPersonalInfo)
   } catch (error) {
-
+    
     return res.status(400).json(error.toString())
   }
+  
+  const creationTime = DatesHelp.getNow()
+
+  // insert into user statistics
 
   res.status(201).json({ message: 'User created successfully' })
 }

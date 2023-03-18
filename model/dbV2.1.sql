@@ -15,7 +15,7 @@ CREATE TABLE login_statistics (
 	login_id serial NOT NULL UNIQUE,
 	user_uuid varchar(40) NOT NULL,
 	login_date timestamp NOT NULL DEFAULT current_timestamp,
-	time_spent interval
+	logout_date timestamp
 );
 
 
@@ -26,8 +26,10 @@ CREATE TABLE personal_info (
 	last_name varchar(50) NOT NULL,
 	phone varchar(20) NOT NULL,
 	birth_date DATE NOT NULL,
+	age int NOT NULL,
+	gender varchar(20) NOT NULL,
+	identity_doc_number varchar(50) NOT NULL,
 	address varchar(100) NOT NULL,
-	gvmt_id varchar(50) NOT NULL,
 	city varchar(50) NOT NULL,
 	state varchar(50) NOT NULL,
 	country varchar(50) NOT NULL,
@@ -44,14 +46,14 @@ CREATE TABLE user_statistics (
 	failed_transactions integer NOT NULL DEFAULT 0,
 	aborted_transactions integer NOT NULL DEFAULT 0,
 	churn_risk integer NOT NULL DEFAULT 0,
-	days_since_last_login integer NOT NULL DEFAULT 0,
-	days_since_last_transaction integer NOT NULL DEFAULT 0,
-	time_spent_per_week interval NOT NULL,
-	login_count integer NOT NULL,
-	tenure interval,
-	creation_time DATE NOT NULL,
-	inactive BOOLEAN NOT NULL,
-	cancelled varchar(255) NOT NULL,
+	-- days_since_last_login integer NOT NULL DEFAULT 0,
+	-- days_since_last_transaction integer NOT NULL DEFAULT 0,
+	-- time_spent_per_week interval NOT NULL DEFAULT 0,
+	-- login_count integer NOT NULL DEFAULT 0,
+	-- tenure interval,
+	creation_time timestamp NOT NULL DEFAULT current_timestamp,
+	is_inactive BOOLEAN NOT NULL DEFAULT FALSE,
+	is_cancelled BOOLEAN NOT NULL DEFAULT FALSE,
 	CONSTRAINT user_statistics_pk PRIMARY KEY (user_statistics_id)
 );
 
@@ -96,17 +98,11 @@ CREATE TABLE transactions (
 	total_amount numeric NOT NULL,
 	date_time TIMESTAMP NOT NULL,
 	user_completed BOOLEAN NOT NULL,
-	went_trough BOOLEAN NOT NULL,
+	went_through BOOLEAN NOT NULL,
 	transaction_time timestamp NOT NULL DEFAULT current_timestamp,
-	geolocation POINT NOT NULL,
+	geolocation POINT,
 	CONSTRAINT transactions_pk PRIMARY KEY (transaction_id)
 );
-
--- INSERT INTO locations (name, location)
--- VALUES ('San Francisco', ST_Point(-122.4194, 37.7749));
-
--- SELECT name, ST_X(location) AS longitude, ST_Y(location) AS latitude
--- FROM locations;
 
 
 
