@@ -98,17 +98,11 @@ CREATE TABLE transactions (
 	total_amount numeric NOT NULL,
 	date_time TIMESTAMP NOT NULL,
 	user_completed BOOLEAN NOT NULL,
-	went_trough BOOLEAN NOT NULL,
+	went_through BOOLEAN NOT NULL,
 	transaction_time timestamp NOT NULL DEFAULT current_timestamp,
 	geolocation POINT,
 	CONSTRAINT transactions_pk PRIMARY KEY (transaction_id)
 );
-
--- INSERT INTO locations (name, location)
--- VALUES ('San Francisco', ST_Point(-122.4194, 37.7749));
-
--- SELECT name, ST_X(location) AS longitude, ST_Y(location) AS latitude
--- FROM locations;
 
 
 

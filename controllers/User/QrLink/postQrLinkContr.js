@@ -2,9 +2,8 @@ const QrLink = require('../../../model/qrLinkModel')
 const { v4: uuidv4 } = require('uuid')
 
 const postQrlink = async (req, res) => {
-
+  console.log('first')
   try {
-
     const qrLink = await QrLink.insertData('qrLinks', newQrLinkData(req))
     console.log()
     return res.status(200).json(qrLink)

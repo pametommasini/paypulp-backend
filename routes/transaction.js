@@ -1,8 +1,11 @@
-var express = require('express');
-var router = express.Router();
-const { validateTransaction } = require('../middlewares/TransactionValidator');
-const { validateResult } = require('../middlewares/validators/bodyValid');
+var express = require('express')
+var router = express.Router()
+const { validateTransaction } = require('../middlewares/TransactionValidator')
+const { validateResult } = require('../middlewares/validators/bodyValid')
 
-// router.post('/:selleruuid/:totalamount', validateTransaction, validateResult, require("../controllers/Transactions/getNewTransaction"));
+router.post(
+  '/',
+  /* validateTransaction, validateResult, */ require('../controllers/Transaction/postTransaction.js'),
+)
 
-module.exports = router;
+module.exports = router
